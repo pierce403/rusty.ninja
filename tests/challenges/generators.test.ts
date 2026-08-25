@@ -20,6 +20,8 @@ describe("challenge generator registry", () => {
 
     expect(interactions).toEqual(new Set([
       "multiple-choice",
+      "code-comprehension",
+      "output-prediction",
       "safety-classification",
       "dangerous-line",
       "patch-selection",

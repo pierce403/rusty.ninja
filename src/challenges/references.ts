@@ -63,6 +63,97 @@ const REFERENCES_BY_TEMPLATE: Readonly<Record<string, readonly OfficialReference
       "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-annotation-syntax",
     ),
   ],
+  "reading.output-filtered-total.v1": [
+    reference(
+      "The Rust Book",
+      "Looping through a collection with for",
+      "https://doc.rust-lang.org/book/ch03-05-control-flow.html#looping-through-a-collection-with-for",
+    ),
+  ],
+  "reading.retain-pending-jobs.v1": [
+    reference(
+      "Rust standard library",
+      "Vec::retain",
+      "https://doc.rust-lang.org/std/vec/struct.Vec.html#method.retain",
+    ),
+  ],
+  "reading.output-normalized-name.v1": [
+    reference(
+      "Rust standard library",
+      "str::make_ascii_lowercase",
+      "https://doc.rust-lang.org/std/primitive.str.html#method.make_ascii_lowercase",
+    ),
+    reference(
+      "Rust standard library",
+      "String::push_str",
+      "https://doc.rust-lang.org/std/string/struct.String.html#method.push_str",
+    ),
+  ],
+  "reading.parse-config-entry.v1": [
+    reference(
+      "Rust standard library",
+      "str::split_once",
+      "https://doc.rust-lang.org/std/primitive.str.html#method.split_once",
+    ),
+    reference(
+      "Rust standard library",
+      "Result::ok",
+      "https://doc.rust-lang.org/std/result/enum.Result.html#method.ok",
+    ),
+    reference(
+      "Rust Reference",
+      "The question mark operator",
+      "https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator",
+    ),
+  ],
+  "reading.output-valid-ports.v1": [
+    reference(
+      "Rust standard library",
+      "Iterator::filter_map",
+      "https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map",
+    ),
+    reference(
+      "Rust standard library",
+      "str::parse",
+      "https://doc.rust-lang.org/std/primitive.str.html#method.parse",
+    ),
+  ],
+  "reading.count-normalized-tags.v1": [
+    reference(
+      "Rust standard library",
+      "HashMap::entry",
+      "https://doc.rust-lang.org/std/collections/hash_map/struct.HashMap.html#method.entry",
+    ),
+    reference(
+      "Rust standard library",
+      "Entry::or_insert",
+      "https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html#method.or_insert",
+    ),
+  ],
+  "reading.output-cloned-sort.v1": [
+    reference(
+      "Rust standard library",
+      "Clone",
+      "https://doc.rust-lang.org/std/clone/trait.Clone.html",
+    ),
+    reference(
+      "Rust standard library",
+      "Slice::sort",
+      "https://doc.rust-lang.org/std/primitive.slice.html#method.sort",
+    ),
+  ],
+  "reading.output-drop-scopes.v1": [
+    reference(
+      "Rust standard library",
+      "Drop",
+      "https://doc.rust-lang.org/std/ops/trait.Drop.html",
+    ),
+    reference(
+      "Rust Reference",
+      "Drop scopes",
+      "https://doc.rust-lang.org/reference/destructors.html#drop-scopes",
+    ),
+  ],
   "ownership.move-after-move.v1": [
     reference(
       "The Rust Book",

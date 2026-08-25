@@ -16,6 +16,8 @@ const ENTROPY_PATTERN = /^[A-Za-z0-9_-]{4,48}$/;
 const CANONICAL_SEED_VERSION = "R1";
 const INTERACTION_TYPES = new Set([
   "multiple-choice",
+  "code-comprehension",
+  "output-prediction",
   "safety-classification",
   "dangerous-line",
   "patch-selection",
@@ -34,7 +36,7 @@ const FINDING_CLASSES = new Set([
   "unsoundness",
   "undefined-behavior",
 ]);
-const CHALLENGE_TRACKS = new Set(["syntax-vocabulary"]);
+const CHALLENGE_TRACKS = new Set(["syntax-vocabulary", "code-reading"]);
 
 export interface CanonicalChallengeSeed {
   readonly version: 1;

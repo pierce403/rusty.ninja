@@ -29,6 +29,23 @@ does not panic, and a slice is a bounded borrowed view rather than an owned
 collection. Missing any opening challenge exposes the relevant official Rust
 documentation in feedback.
 
+## Practical code reading
+
+Levels 0.35–5.25 also sample eight procedural exercises in reading normal,
+practical Rust. Five ask for the exact printed output and three ask for the best
+description of a function's behavior. Every question has four realistic choices;
+the distractors reflect common tracing errors rather than intentionally obscure
+syntax tricks.
+
+The lane progresses through guarded accumulation, `Vec::retain`, in-place string
+normalization, `Option`/`Result` parsing, lazy iterator pipelines,
+`HashMap::entry`, clone-and-sort ownership, and lexical `Drop` timing. These are
+classified as **Rust language behavior**, not as invented vulnerabilities. They
+train the exact execution tracing needed before a reviewer can judge whether a
+guard, parser, allocation, or cleanup path is security relevant. Incorrect
+answers link to the standard-library, Rust Book, or Rust Reference pages for the
+specific components involved.
+
 ## Primary references
 
 - [The Rust Programming Language: ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
@@ -63,4 +80,4 @@ The release review samples stable variants around levels 1, 3, 5, 7, 9, and 10. 
 5. identify when pinning actually begins and why an internal pointer dangles;
 6. trace safe deserialization around a constructor into unsafe unchecked indexing, connect all invariant failures, and prioritize the resulting soundness finding.
 
-Generator tests exercise every template at 24 positions across its declared difficulty range, validate answer cardinality and IDs, and reproduce canonical share seeds byte-for-byte. Compile-fail, Miri, architecture, and dependency-version fixtures are appropriate follow-up gates for future templates whose correctness depends on them.
+Generator tests exercise every template at 24 positions across its declared difficulty range and validate answer cardinality and IDs. Dedicated reading-lane tests cover 20 variants of each generator, and golden fingerprints protect every canonical and historical short share seed that predates the lane. Compile-fail, Miri, architecture, and dependency-version fixtures are appropriate follow-up gates for future templates whose correctness depends on them.

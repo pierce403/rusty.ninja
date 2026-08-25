@@ -46,17 +46,26 @@ const FINDING_LABELS = {
 } as const;
 
 function renderLearningTrack(challenge: Challenge): HTMLElement | null {
-  if (challenge.track !== "syntax-vocabulary") return null;
+  const details = challenge.track === "syntax-vocabulary"
+    ? {
+        eyebrow: "Opening track",
+        title: "Rust syntax & vocabulary",
+        copy: "Decode the notation first: bindings, borrows, slices, lifetimes, and error flow.",
+      }
+    : challenge.track === "code-reading"
+      ? {
+          eyebrow: "Practical track",
+          title: "Read the code",
+          copy: "Trace ordinary Rust from inputs to effects, then choose the behavior or exact output.",
+        }
+      : null;
+  if (!details) return null;
 
   const track = element("aside", "learning-track");
   track.append(
-    element("span", "learning-track__eyebrow", "Opening track"),
-    element("strong", "learning-track__title", "Rust syntax & vocabulary"),
-    element(
-      "p",
-      "learning-track__copy",
-      "Decode the notation first: bindings, borrows, slices, lifetimes, and error flow.",
-    ),
+    element("span", "learning-track__eyebrow", details.eyebrow),
+    element("strong", "learning-track__title", details.title),
+    element("p", "learning-track__copy", details.copy),
   );
   return track;
 }

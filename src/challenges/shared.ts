@@ -79,6 +79,8 @@ export function code(lines: readonly string[]): string {
 export function interactionLabel(type: ChallengeInteractionType): string {
   const labels: Record<ChallengeInteractionType, string> = {
     "multiple-choice": "Choose one",
+    "code-comprehension": "Explain the code",
+    "output-prediction": "Predict the output",
     "safety-classification": "Safe, unsafe, or depends",
     "dangerous-line": "Select a line",
     "patch-selection": "Choose the patch",

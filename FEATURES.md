@@ -11,13 +11,17 @@ affected entry before implementation and update it alongside behavior or evidenc
 - **Description**: Deliver a mobile-first, endless Rust security code-review
   game that adapts to the player and works offline after first load.
 - **Properties**:
-  - Thirty-two deterministic procedural templates cover all eight interaction
-    formats from Rust syntax and vocabulary through unsafe abstractions, FFI,
-    concurrency, and advanced soundness.
+  - Forty deterministic procedural templates cover ten interaction formats from
+    Rust syntax and vocabulary through unsafe abstractions, FFI, concurrency,
+    and advanced soundness.
   - Six opening-track generators teach bindings and shadowing, shared and mutable
     references, slices, lifetimes, `Option`/`Result`, and `?`; they are
     preferentially sampled during the first 18 answers without becoming a fixed
     tutorial.
+  - Eight practical code-reading generators present four realistic descriptions
+    or exact outputs for ordinary Rust involving control flow, mutation, parsing,
+    iterators, ownership, collections, and RAII; five ask what gets printed and
+    three ask what the code does.
   - A continuous uncertainty-aware rating adapts difficulty on a 0–10 scale and
     makes exact level 10 an exceptional calibrated result rather than a grind.
   - Versioned localStorage preserves exact in-progress feedback, concept stats,
@@ -50,6 +54,9 @@ affected entry before implementation and update it alongside behavior or evidenc
   - [x] Opening syntax challenges are deterministic, stay within level 0.0–2.35,
     use a non-finding language-behavior classification, and retain normal adaptive
     rating and share-link behavior.
+  - [x] Practical code-reading challenges are deterministic, contain exactly four
+    distinct answers with one correct choice, fit within 20 lines, span levels
+    0.35–5.25, and preserve all pre-existing canonical and short share seeds.
   - [ ] Standalone install, offline relaunch, and the narrow layout are exercised
     on a mobile-capable browser or physical device.
   - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy

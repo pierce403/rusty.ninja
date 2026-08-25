@@ -5,7 +5,9 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Add a procedural practical code-reading lane with four-choice behavior and
+  exact-output challenges across increasing complexity, then publish and verify
+  it on `main`. Owner: root.
 
 ## Ready
 

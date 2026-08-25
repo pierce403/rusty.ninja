@@ -4,7 +4,7 @@ rusty.ninja is a mobile-first, installable Rust security training game. It conti
 
 The curriculum opens with a Rust syntax and vocabulary track, then spans foundational reasoning, safe-code security failures, integer and allocation hazards, parsing, concurrency, unsafe abstractions, FFI, and advanced soundness. Rusty, the game's battered robot, is repaired and upgraded as the player's skill improves.
 
-The v1 registry contains 32 procedural templates across all eight interaction formats. Six low-level generators teach how to read bindings, borrows, slices, lifetimes, `Option`/`Result`, and `?` before the security findings become demanding. Each template varies domain details, values, types, answer order, and selected branches from a stable seed. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
+The v1 registry contains 40 procedural templates across ten interaction formats. Six low-level generators teach how to read bindings, borrows, slices, lifetimes, `Option`/`Result`, and `?` before the security findings become demanding. Eight practical code-reading generators then ask the player to choose what ordinary Rust does or predict its exact output from four realistic answers. Each template varies domain details, values, types, answer order, and selected branches from a stable seed. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
 
 ## How it works
 

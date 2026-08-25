@@ -1,5 +1,6 @@
 import type { ChallengeTemplate } from "../game/types";
 import { syntaxVocabularyTemplates } from "./syntax";
+import { practicalReadingTemplates } from "./reading";
 import {
   boundaryIndexTemplate,
   moveAfterMoveTemplate,
@@ -44,6 +45,7 @@ import {
  */
 export const challengeTemplates: readonly ChallengeTemplate[] = [
   ...syntaxVocabularyTemplates,
+  ...practicalReadingTemplates,
   moveAfterMoveTemplate,
   boundaryIndexTemplate,
   refCellReentrancyTemplate,

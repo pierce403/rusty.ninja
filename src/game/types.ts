@@ -11,10 +11,12 @@ export type FindingClass =
   | "unsoundness"
   | "undefined-behavior";
 
-export type ChallengeTrack = "syntax-vocabulary";
+export type ChallengeTrack = "syntax-vocabulary" | "code-reading";
 
 export type SingleChoiceInteractionType =
   | "multiple-choice"
+  | "code-comprehension"
+  | "output-prediction"
   | "safety-classification"
   | "dangerous-line"
   | "patch-selection"
