@@ -21,6 +21,8 @@ affected entry before implementation and update it alongside behavior or evidenc
   - Six original Rusty progression states, responsive controls, shareable seeded
     hashes, export/import/reset, and accessible keyboard behavior support a fast
     phone-first loop.
+  - Incorrect answers include a compact, template-specific reading list from the
+    relevant official Rust, Serde, Tokio, or serde_json documentation.
   - A manifest and generated service worker cache the application and challenge
     assets for offline use.
   - Vite uses `/` as its base path for the `rusty.ninja` custom domain.
@@ -39,6 +41,8 @@ affected entry before implementation and update it alongside behavior or evidenc
     are verified against the production deployment.
   - [x] The production manifest, service worker, social preview, and generated
     precache structure are present with successful responses and correct types.
+  - [x] Every registered challenge template has one to three unique HTTPS links
+    on approved official documentation hosts, shown only after an incorrect answer.
   - [ ] Standalone install, offline relaunch, and the narrow layout are exercised
     on a mobile-capable browser or physical device.
   - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy

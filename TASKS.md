@@ -5,13 +5,13 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Complete device-level PWA acceptance. Owner: Codex / next mobile-capable
-  session. Exercise standalone install, offline relaunch, and the narrow layout;
-  the current cloud browser exposes neither service workers nor viewport emulation.
+None.
 
 ## Ready
 
-None.
+- [ ] Complete device-level PWA acceptance. Owner: next mobile-capable session.
+  Exercise standalone install, offline relaunch, and the narrow layout; the current
+  cloud browser exposes neither service workers nor viewport emulation.
 
 ## Blocked
 
@@ -19,6 +19,9 @@ None.
 
 ## Completed
 
+- [x] 2026-08-25 — Add contextual official documentation to incorrect-answer
+  feedback. Evidence: all 26 templates covered by 39 live links, 53 tests,
+  typecheck, production build, and PWA verification.
 - [x] 2026-08-25 — Publish and production-smoke the complete rusty.ninja v1
   wargame. Evidence: commit `9bc8741`, Actions run `32868659617`, successful
   answer/feedback/next loop, deterministic seeded replay, exact reload resume,

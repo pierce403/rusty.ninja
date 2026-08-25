@@ -11,6 +11,7 @@ The v1 registry contains 26 procedural templates across all eight interaction fo
 - Challenges are produced locally from composable templates and a seeded PRNG. A challenge URL such as `/#/c/7F3A91` always reproduces the same challenge.
 - A difficulty-aware rating model compares the player estimate with each challenge difficulty. It tracks uncertainty, slows progression near level 10, and samples occasional easier and harder challenges for calibration.
 - Feedback distinguishes compiler errors, logic flaws, panics and denial of service, security vulnerabilities, context-dependent contracts, undefined behavior, and unsound safe abstractions.
+- Incorrect-answer feedback links directly to the relevant official Rust, Serde, Tokio, or serde_json documentation so the underlying API and language contracts are easy to verify.
 - Progress, exact in-progress answers/feedback, concept proficiency, streaks, calibration, and bounded durable replay protection stay in versioned `localStorage`. No account or backend is required.
 - The generated service worker precaches the app shell, challenge engine, icons, and Rusty artwork. After one successful production load, training and progress work offline.
 

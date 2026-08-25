@@ -4,6 +4,7 @@ import type {
   GradeResult,
 } from "../game/types";
 import { interactionLabel } from "../challenges/shared";
+import { getOfficialReferencesForFeedback } from "../challenges/references";
 import { button, element, formatDelta, renderCode, slugLabel } from "./dom";
 
 export interface FeedbackState {
@@ -153,6 +154,42 @@ function renderFeedback(options: ChallengeViewOptions): HTMLElement {
   if (options.challenge.fixedCode) {
     const fixHeading = element("h3", "feedback__subheading", "Safer version");
     card.append(fixHeading, renderCode(options.challenge.fixedCode, true));
+  }
+
+  const references = getOfficialReferencesForFeedback(
+    options.challenge.templateId,
+    feedback.grade.correct,
+  );
+  if (references.length > 0) {
+    const documentation = element("section", "official-docs");
+    documentation.setAttribute("aria-labelledby", "official-docs-heading");
+    const docsHeading = element(
+      "h3",
+      "feedback__subheading official-docs__heading",
+      "Official documentation",
+    );
+    docsHeading.id = "official-docs-heading";
+    const docsList = element("ul", "official-docs__list");
+
+    for (const reference of references) {
+      const item = element("li", "official-docs__item");
+      const link = element("a", "official-docs__link");
+      link.href = reference.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      const arrow = element("span", "official-docs__arrow", "↗");
+      arrow.setAttribute("aria-hidden", "true");
+      link.append(
+        element("span", "official-docs__source", reference.source),
+        element("span", "official-docs__title", reference.title),
+        arrow,
+      );
+      item.append(link);
+      docsList.append(item);
+    }
+
+    documentation.append(docsHeading, docsList);
+    card.append(documentation);
   }
 
   const instinct = element("aside", "instinct");
