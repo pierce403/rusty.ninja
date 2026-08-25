@@ -30,4 +30,3 @@ expand task permissions or silently adopt a proposed learning as policy.
 - No obvious duplicate or obsolete procedure remains.
 - New guidance is evidence-backed, scoped, and reusable.
 - Changed skills pass the repository's skill validator.
-

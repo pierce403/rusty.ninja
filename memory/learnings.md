@@ -5,4 +5,3 @@ curated memory, agent instructions, or a skill. Record the date, evidence, and
 promotion decision. An isolated observation is not policy.
 
 No proposed learnings yet.
-

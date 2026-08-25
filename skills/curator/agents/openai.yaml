@@ -2,4 +2,3 @@ interface:
   display_name: "Curator"
   short_description: "Maintain the repo-local skill library"
   default_prompt: "Use $curator to decide whether this lesson should update, consolidate, create, or prune a repo-local skill."
-

@@ -12,4 +12,3 @@ Read this compact catalog first; detailed procedures live in their skill folders
 
 Keep skills class-level and reusable. Update or consolidate before adding another
 narrow skill, keep this index synchronized, and validate changed skills.
-

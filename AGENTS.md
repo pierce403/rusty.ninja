@@ -78,8 +78,11 @@ direction and update this file rather than silently inventing a new mandate.
 
 ## Current project notes
 
-- Product scope and technology choices are not yet defined.
+- The product is an endless, adaptive Rust security auditing game built as a
+  mobile-first Vite + TypeScript PWA with no runtime backend.
+- `npm test`, `npm run typecheck`, and `npm run build` are the broad release
+  gates. Challenge correctness is the primary engineering constraint.
+- GitHub Pages serves the custom-domain root at `https://rusty.ninja/`.
 - `.codex/`, `.agents/`, and repo-local `tmp/` are local working artifacts and
   stay untracked.
 - `AGENTS.md` is canonical; `CLAUDE.md` and `GEMINI.md` are compatibility links.
-

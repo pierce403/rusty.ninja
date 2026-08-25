@@ -1,0 +1,44 @@
+# Curriculum and technical references
+
+rusty.ninja treats challenge correctness as a security boundary. The v1 curriculum was reviewed against primary Rust, standard-library, Serde, Tokio, and GitHub Pages documentation. A finding is classified by the strongest behavior established by the shown premises:
+
+- **Compiler error:** rustc rejects the code, so no runtime impact is assigned.
+- **Logic:** the program executes but violates intended semantics.
+- **Panic / DoS:** a reachable panic, deadlock, or resource failure; availability impact requires attacker reachability.
+- **Security:** a memory-safe policy, authorization, parsing, or containment failure.
+- **Context-dependent:** the shown unsafe or foreign boundary may be sound, but the evidence needed to prove its caller, lifetime, ownership, or concurrency contract is not shown.
+- **Undefined behavior:** this execution violates a validity, pointer, aliasing, data-race, or similar unsafe precondition.
+- **Unsoundness:** a safe API permits at least one safe caller to trigger undefined behavior.
+
+`unsafe` alone is not a finding, and safe Rust alone is not a security argument. Questions that depend on target width, overflow checks, panic strategy, allocator behavior, operating-system path resolution, executor behavior, or an FFI ownership contract must state or ask for that context.
+
+## Primary references
+
+- [The Rust Programming Language: ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+- [Rust Reference: numeric casts](https://doc.rust-lang.org/reference/expressions/operator-expr.html#numeric-cast)
+- [Rust Reference: behavior considered undefined](https://doc.rust-lang.org/reference/behavior-considered-undefined.html)
+- [`slice::from_raw_parts` safety contract](https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html)
+- [`slice::get_unchecked` safety contract](https://doc.rust-lang.org/std/primitive.slice.html#method.get_unchecked)
+- [`Vec::from_raw_parts` safety contract](https://doc.rust-lang.org/std/vec/struct.Vec.html#method.from_raw_parts)
+- [`MaybeUninit` initialization invariant](https://doc.rust-lang.org/std/mem/union.MaybeUninit.html#initialization-invariant)
+- [`Pin` and self-referential construction](https://doc.rust-lang.org/std/pin/index.html#a-self-referential-struct)
+- [Rustonomicon: Send and Sync](https://doc.rust-lang.org/nomicon/send-and-sync.html)
+- [Rustonomicon: FFI and unwinding](https://doc.rust-lang.org/nomicon/ffi.html#ffi-and-unwinding)
+- [`CString::from_raw`](https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw) and [`CStr::from_ptr`](https://doc.rust-lang.org/std/ffi/struct.CStr.html#method.from_ptr)
+- [Serde enum representations](https://serde.rs/enum-representations.html#untagged)
+- [Serde container attributes](https://serde.rs/container-attrs.html#serde-deny_unknown_fields)
+- [Tokio `select!` cancellation safety](https://docs.rs/tokio/latest/tokio/macro.select.html#cancellation-safety)
+- [Tokio shared-state guidance](https://tokio.rs/tokio/tutorial/shared-state)
+
+## Manual difficulty audit
+
+The release review samples stable variants around levels 1, 3, 5, 7, 9, and 10. The expected progression is:
+
+1. distinguish compiler enforcement from runtime impact;
+2. derive exact integer or boundary counterexamples;
+3. reason about ambiguous parser selection and policy consequences;
+4. enumerate independent FFI ownership, pointer, encoding, and unwind contracts;
+5. identify when pinning actually begins and why an internal pointer dangles;
+6. trace safe deserialization around a constructor into unsafe unchecked indexing, connect all invariant failures, and prioritize the resulting soundness finding.
+
+Generator tests exercise every template at 24 positions across its declared difficulty range, validate answer cardinality and IDs, and reproduce canonical share seeds byte-for-byte. Compile-fail, Miri, architecture, and dependency-version fixtures are appropriate follow-up gates for future templates whose correctness depends on them.

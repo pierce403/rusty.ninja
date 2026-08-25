@@ -1,0 +1,305 @@
+import type { ChallengeTemplate } from "../../game/types";
+import { boundedDifficulty, code, multiChallenge, singleChallenge } from "../shared";
+
+export const twoMutableReferencesTemplate: ChallengeTemplate = {
+  id: "soundness.two-mutable-references.v1",
+  concepts: ["aliasing", "safe-abstractions", "mutable-references", "unsafe-internals"],
+  minDifficulty: 7.1,
+  maxDifficulty: 8.9,
+  generate(rng, targetDifficulty) {
+    const name = rng.pick(["two_mut", "pair_mut", "borrow_pair"]);
+    const slice = rng.pick(["items", "values", "slots"]);
+
+    return singleChallenge(rng, {
+      templateId: this.id,
+      difficulty: boundedDifficulty(targetDifficulty, this.minDifficulty, this.maxDifficulty, rng),
+      concepts: this.concepts,
+      title: "Safe callers, aliased mutability",
+      code: code([
+        `pub fn ${name}<T>(${slice}: &mut [T], a: usize, b: usize)`,
+        `    -> Option<(&mut T, &mut T)>`,
+        `{`,
+        `    if a < ${slice}.len() && b < ${slice}.len() {`,
+        `        let ptr = ${slice}.as_mut_ptr();`,
+        `        unsafe {`,
+        `            Some((&mut *ptr.add(a), &mut *ptr.add(b)))`,
+        `        }`,
+        `    } else {`,
+        `        None`,
+        `    }`,
+        `}`,
+      ]),
+      question: "Which safe input violates the unsafe block's invariant?",
+      interactionType: "breaking-input",
+      answers: [
+        { id: "same", label: "a and b are equal and in bounds" },
+        { id: "adjacent", label: "a and b are adjacent and in bounds" },
+        { id: "empty", label: "The slice is empty, so the function returns None" },
+        { id: "zst", label: "T has a destructor" },
+      ],
+      correctAnswer: "same",
+      explanation: "When a == b, the function creates and returns two live mutable references to the same element. Bounds checks do not establish uniqueness. A safe caller can trigger the violation, so the abstraction is unsound.",
+      impact: "Aliased &mut references violate Rust's reference rules and can cause UB, even if a particular caller only reads through them.",
+      fixedCode: code([
+        `pub fn ${name}<T>(${slice}: &mut [T], a: usize, b: usize)`,
+        `    -> Option<(&mut T, &mut T)>`,
+        `{`,
+        `    if a == b || a >= ${slice}.len() || b >= ${slice}.len() {`,
+        `        return None;`,
+        `    }`,
+        `    if a < b {`,
+        `        let (left, right) = ${slice}.split_at_mut(b);`,
+        `        Some((&mut left[a], &mut right[0]))`,
+        `    } else {`,
+        `        let (left, right) = ${slice}.split_at_mut(a);`,
+        `        Some((&mut right[0], &mut left[b]))`,
+        `    }`,
+        `}`,
+      ]),
+      auditorTakeaway: "Unsafe code often relies on relational invariants—here, in-bounds and distinct—not single-value checks.",
+      findingClass: "unsoundness",
+    });
+  },
+};
+
+export const invalidSendTemplate: ChallengeTemplate = {
+  id: "soundness.invalid-send.v1",
+  concepts: ["send-sync", "unsafe-traits", "data-races", "interior-mutability"],
+  minDifficulty: 7.8,
+  maxDifficulty: 9.3,
+  generate(rng, targetDifficulty) {
+    const iterations = rng.pick([1000, 4096, 10_000]);
+
+    return singleChallenge(rng, {
+      templateId: this.id,
+      difficulty: boundedDifficulty(targetDifficulty, this.minDifficulty, this.maxDifficulty, rng),
+      concepts: this.concepts,
+      title: "One unsafe trait impl crosses every boundary",
+      code: code([
+        `#[derive(Clone)]`,
+        `struct Counter(Rc<Cell<u64>>);`,
+        ``,
+        `unsafe impl Send for Counter {}`,
+        ``,
+        `impl Counter {`,
+        `    fn bump(&self) {`,
+        `        self.0.set(self.0.get() + 1);`,
+        `    }`,
+        `}`,
+        ``,
+        `let first = Counter(Rc::new(Cell::new(0)));`,
+        `let second = first.clone();`,
+        `let worker = thread::spawn(move || {`,
+        `    for _ in 0..${iterations} { second.bump(); }`,
+        `});`,
+        `for _ in 0..${iterations} { first.bump(); }`,
+        `worker.join().unwrap();`,
+      ]),
+      question: "What is the strongest accurate classification?",
+      interactionType: "safety-classification",
+      answers: [
+        { id: "unsound", label: "Unsound safe abstraction: safe code can cause a Cell data race and UB" },
+        { id: "lost", label: "Only a harmless lost-update logic race" },
+        { id: "compile", label: "The compiler still rejects Counter as non-Send" },
+        { id: "safe", label: "Safe because the unsafe impl contains no unsafe block" },
+      ],
+      correctAnswer: "unsound",
+      explanation: "The manual Send promise suppresses the compiler's correct rejection of Rc<Cell<_>> across threads. The two safe bump calls can concurrently access Cell's non-atomic storage, creating a Rust data race and UB.",
+      impact: "The trait implementation makes ordinary safe thread::spawn code memory-unsafe. Removing it restores compiler enforcement; shared counters should use Arc with a mutex or atomic chosen for the required ordering.",
+      fixedCode: code([
+        `#[derive(Clone)]`,
+        `struct Counter(Arc<AtomicU64>);`,
+        ``,
+        `impl Counter {`,
+        `    fn bump(&self) {`,
+        `        self.0.fetch_add(1, Ordering::Relaxed);`,
+        `    }`,
+        `}`,
+      ]),
+      auditorTakeaway: "An unsafe Send or Sync impl is a global promise to all safe consumers; test it with the worst legal T.",
+      findingClass: "unsoundness",
+    });
+  },
+};
+
+export const prePinSelfReferenceTemplate: ChallengeTemplate = {
+  id: "soundness.pre-pin-self-reference.v1",
+  concepts: ["pinning", "self-references", "phantom-pinned", "dangling-pointers"],
+  minDifficulty: 8.6,
+  maxDifficulty: 9.75,
+  generate(rng, targetDifficulty) {
+    const size = rng.pick([8, 16, 32]);
+    const field = rng.pick(["first", "head", "cursor"]);
+
+    return singleChallenge(rng, {
+      templateId: this.id,
+      difficulty: boundedDifficulty(targetDifficulty, this.minDifficulty, this.maxDifficulty, rng, 0.08),
+      concepts: this.concepts,
+      title: "Pinned after the pointer was taken",
+      code: code([
+        `struct Node {`,
+        `    data: [u8; ${size}],`,
+        `    ${field}: *const u8,`,
+        `    _pin: PhantomPinned,`,
+        `}`,
+        ``,
+        `impl Node {`,
+        `    fn new(data: [u8; ${size}]) -> Pin<Box<Self>> {`,
+        `        let mut node = Self {`,
+        `            data, ${field}: ptr::null(), _pin: PhantomPinned,`,
+        `        };`,
+        `        node.${field} = node.data.as_ptr();`,
+        `        Box::pin(node)`,
+        `    }`,
+        ``,
+        `    pub fn ${field}(self: Pin<&Self>) -> u8 {`,
+        `        unsafe { *self.${field} }`,
+        `    }`,
+        `}`,
+      ]),
+      question: "Which patch creates the self-reference at a stable address?",
+      interactionType: "patch-selection",
+      answers: [
+        { id: "box-first", label: "Box the node, set the pointer into the boxed data, then call Box::into_pin" },
+        { id: "forget", label: "Call mem::forget(node) before Box::pin(node)" },
+        { id: "unpin", label: "Implement Unpin so Box::pin cannot move it" },
+        { id: "unsafe-new", label: "Mark new as unsafe without changing construction" },
+      ],
+      correctAnswer: "box-first",
+      explanation: "The pointer targets the stack-local node. Moving node into Box::pin relocates it, so the stored pointer dangles before pinning begins. PhantomPinned prevents later safe moves; it cannot make an earlier pointer valid.",
+      impact: `The safe ${field} method dereferences a dangling pointer, so the abstraction exposes UB to safe callers.`,
+      fixedCode: code([
+        `let mut boxed = Box::new(Self {`,
+        `    data, ${field}: ptr::null(), _pin: PhantomPinned,`,
+        `});`,
+        `boxed.${field} = boxed.data.as_ptr();`,
+        `Box::into_pin(boxed)`,
+      ]),
+      auditorTakeaway: "Pinning guarantees begin at pin construction; create address-sensitive links only after the final allocation.",
+      findingClass: "unsoundness",
+    });
+  },
+};
+
+export const phantomIteratorTemplate: ChallengeTemplate = {
+  id: "soundness.missing-phantomdata.v1",
+  concepts: ["phantomdata", "lifetimes", "raw-pointers", "variance"],
+  minDifficulty: 8.0,
+  maxDifficulty: 9.4,
+  generate(rng, targetDifficulty) {
+    const name = rng.pick(["RawIter", "PointerIter", "FastIter"]);
+
+    return singleChallenge(rng, {
+      templateId: this.id,
+      difficulty: boundedDifficulty(targetDifficulty, this.minDifficulty, this.maxDifficulty, rng),
+      concepts: this.concepts,
+      title: "The lifetime the type forgot",
+      code: code([
+        `struct ${name}<T> { ptr: *const T, end: *const T }`,
+        ``,
+        `fn iter<T: 'static>(slice: &[T]) -> ${name}<T> {`,
+        `    ${name} {`,
+        `        ptr: slice.as_ptr(),`,
+        `        end: unsafe { slice.as_ptr().add(slice.len()) },`,
+        `    }`,
+        `}`,
+        ``,
+        `impl<T: 'static> Iterator for ${name}<T> {`,
+        `    type Item = &'static T;`,
+        `    fn next(&mut self) -> Option<Self::Item> {`,
+        `        if self.ptr == self.end { return None; }`,
+        `        let item = unsafe { &*self.ptr };`,
+        `        self.ptr = unsafe { self.ptr.add(1) };`,
+        `        Some(item)`,
+        `    }`,
+        `}`,
+      ]),
+      question: "Why does T: 'static not make this iterator sound?",
+      interactionType: "multiple-choice",
+      answers: [
+        { id: "value-life", label: "It constrains references inside T, not how long the borrowed slice allocation lives" },
+        { id: "raw-static", label: "Raw pointers automatically extend their allocation to 'static" },
+        { id: "compiler", label: "The compiler infers the slice lifetime through ptr" },
+        { id: "zst", label: "Only zero-sized T can outlive a slice" },
+      ],
+      correctAnswer: "value-life",
+      explanation: "A type such as u64 is 'static even when a particular Vec<u64> is about to be dropped. Raw pointers carry no borrow lifetime, so the safe constructor can return an iterator that yields 'static references after the slice dies.",
+      impact: "Safe code can obtain dangling shared references and trigger use-after-free UB. The missing lifetime marker also affects auto-traits, variance, and drop checking seen by the compiler.",
+      fixedCode: code([
+        `struct ${name}<'a, T> {`,
+        `    ptr: *const T,`,
+        `    end: *const T,`,
+        `    _borrow: PhantomData<&'a T>,`,
+        `}`,
+        `fn iter<'a, T>(slice: &'a [T]) -> ${name}<'a, T> { /* ... */ }`,
+        `impl<'a, T> Iterator for ${name}<'a, T> { type Item = &'a T; /* ... */ }`,
+      ]),
+      auditorTakeaway: "PhantomData tells the compiler which borrowed ownership story raw fields cannot express.",
+      findingClass: "unsoundness",
+    });
+  },
+};
+
+export const deserializedInvariantTemplate: ChallengeTemplate = {
+  id: "soundness.deserialized-invariant.v1",
+  concepts: ["serde", "invariants", "unsafe-abstractions", "integer-overflow", "get-unchecked"],
+  minDifficulty: 9.35,
+  maxDifficulty: 10,
+  generate(rng, targetDifficulty) {
+    const typeName = rng.pick(["CheckedRange", "VerifiedSpan", "TrustedWindow"]);
+    const source = rng.pick(["json", "request", "wire"]);
+
+    return multiChallenge(rng, {
+      templateId: this.id,
+      difficulty: boundedDifficulty(targetDifficulty, this.minDifficulty, this.maxDifficulty, rng, 0.04),
+      concepts: this.concepts,
+      title: "Safe deserialization bypasses the unsafe invariant",
+      code: code([
+        `#[derive(Deserialize)]`,
+        `struct ${typeName} { start: usize, len: usize }`,
+        ``,
+        `impl ${typeName} {`,
+        `    fn new(start: usize, len: usize, total: usize) -> Option<Self> {`,
+        `        let end = start.checked_add(len)?;`,
+        `        (end <= total).then_some(Self { start, len })`,
+        `    }`,
+        ``,
+        `    fn apply<'a>(&self, data: &'a [u8]) -> &'a [u8] {`,
+        `        let end = self.start + self.len;`,
+        `        unsafe { data.get_unchecked(self.start..end) }`,
+        `    }`,
+        `}`,
+        ``,
+        `fn extract<'a>(${source}: &str, data: &'a [u8])`,
+        `    -> Result<&'a [u8], Error>`,
+        `{`,
+        `    let range: ${typeName} = serde_json::from_str(${source})?;`,
+        `    Ok(range.apply(data))`,
+        `}`,
+      ]),
+      question: "Find all issues an audit report should connect into the primary soundness finding.",
+      interactionType: "find-all",
+      answers: [
+        { id: "derive", label: "Derived Deserialize constructs the type without calling new" },
+        { id: "detached", label: "new validates against an arbitrary total, not the later slice" },
+        { id: "overflow", label: "apply repeats start + len without checked arithmetic" },
+        { id: "unchecked", label: "get_unchecked is UB for an invalid/wrapped range, even if the reference is unused" },
+        { id: "private", label: "Private fields force Serde to call new automatically" },
+        { id: "none", label: "The unsafe block contains all risk from safe callers" },
+      ],
+      correctAnswer: ["derive", "detached", "overflow", "unchecked"],
+      explanation: "The type's intended constructor is only one construction path. Derive writes private fields directly, and even new binds the range only to a number, not the slice later passed to apply. Overflow and unchecked indexing then turn the violated semantic invariant into UB through a safe method.",
+      impact: "Attacker-controlled JSON reaches undefined behavior through entirely safe call sites. This is an unsound safe abstraction and likely the lead finding; the unsafe block is the sink, not the root cause.",
+      fixedCode: code([
+        `#[derive(Deserialize)]`,
+        `struct RawRange { start: usize, len: usize }`,
+        ``,
+        `let raw: RawRange = serde_json::from_str(${source})?;`,
+        `let end = raw.start.checked_add(raw.len).ok_or(Error::Range)?;`,
+        `data.get(raw.start..end).ok_or(Error::Range)`,
+      ]),
+      auditorTakeaway: "Enumerate every construction path for invariant-bearing types, including derives and trait impls.",
+      findingClass: "unsoundness",
+    });
+  },
+};

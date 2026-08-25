@@ -5,12 +5,12 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Publish and production-verify the complete rusty.ninja v1 wargame. Owner:
+  Codex. Local gates pass; merge, Actions, apex, mobile, and offline checks remain.
 
 ## Ready
 
-- [ ] Define the project's audience, problem, first milestone, and acceptance
-  criteria with the owner.
+None.
 
 ## Blocked
 

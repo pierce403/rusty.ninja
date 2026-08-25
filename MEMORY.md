@@ -6,7 +6,11 @@ Curated, verified project knowledge belongs here. Dated activity belongs in
 ## Project
 
 - The repository is named `rusty.ninja`.
-- Product scope and technology choices have not yet been defined by the owner.
+- The product is a mobile-first, installable Rust security training game with
+  deterministic procedural challenges, adaptive rating, local-only progress,
+  and a six-stage Rusty robot progression.
+- The implementation uses Vite, vanilla TypeScript and CSS, localStorage, and a
+  generated Workbox service worker; it has no runtime backend.
 - The agent collaboration workflow was initialized on 2026-08-25.
 - GitHub Pages deploys the Vite `dist/` artifact from pushes to `main` at the
   `rusty.ninja` apex; Vite uses the root base path `/`.

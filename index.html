@@ -2,20 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Rusty Ninja" />
+
+    <title>rusty.ninja — Train your Rust security instincts</title>
     <meta
       name="description"
-      content="rusty.ninja is sharpening its tools. A new project is coming soon."
+      content="An endless, adaptive Rust security wargame for practicing code review, unsafe Rust, soundness, concurrency, parsing, FFI, and real audit reasoning."
     />
-    <title>rusty.ninja</title>
+    <link rel="canonical" href="https://rusty.ninja/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:title" content="rusty.ninja — Train your Rust security instincts" />
+    <meta
+      property="og:description"
+      content="An endless, adaptive Rust security wargame built around real code-review reasoning."
+    />
+    <meta property="og:image" content="https://rusty.ninja/og.png" />
+    <meta property="og:image:secure_url" content="https://rusty.ninja/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Rusty the robot beside the rusty.ninja logo and the words Train your Rust security instincts." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rusty.ninja/" />
+    <meta property="og:site_name" content="rusty.ninja" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="rusty.ninja — Train your Rust security instincts" />
+    <meta
+      name="twitter:description"
+      content="An endless, adaptive Rust security wargame built around real code-review reasoning."
+    />
+    <meta name="twitter:image" content="https://rusty.ninja/og.png" />
+    <meta name="twitter:image:alt" content="Rusty the robot beside the rusty.ninja logo and the words Train your Rust security instincts." />
   </head>
   <body>
-    <main>
-      <p class="eyebrow">hello, world</p>
-      <h1>rusty<span>.</span>ninja</h1>
-      <p class="status">Sharpening the tools. Something new is taking shape.</p>
-      <a href="https://github.com/pierce403/rusty.ninja">Watch the repository</a>
-    </main>
-    <script type="module" src="/src/main.js"></script>
+    <div id="app"></div>
+    <noscript>rusty.ninja needs JavaScript to generate challenges and save local progress.</noscript>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

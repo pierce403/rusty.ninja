@@ -5,39 +5,53 @@ affected entry before implementation and update it alongside behavior or evidenc
 
 ## Features
 
-### Public Vite placeholder
+### Adaptive Rust security wargame
 
-- **Stability**: stable
-- **Description**: Serve a lightweight placeholder for `rusty.ninja` from GitHub
-  Pages while the first product milestone is defined.
+- **Stability**: in-progress
+- **Description**: Deliver a mobile-first, endless Rust security code-review
+  game that adapts to the player and works offline after first load.
 - **Properties**:
-  - The source is a minimal Vite app with a production build in `dist/`.
+  - Twenty-six deterministic procedural templates cover all eight interaction
+    formats from ownership fundamentals through unsafe abstractions, FFI,
+    concurrency, and advanced soundness.
+  - A continuous uncertainty-aware rating adapts difficulty on a 0–10 scale and
+    makes exact level 10 an exceptional calibrated result rather than a grind.
+  - Versioned localStorage preserves exact in-progress feedback, concept stats,
+    calibration, and bounded durable replay protection without an account.
+  - Six original Rusty progression states, responsive controls, shareable seeded
+    hashes, export/import/reset, and accessible keyboard behavior support a fast
+    phone-first loop.
+  - A manifest and generated service worker cache the application and challenge
+    assets for offline use.
   - Vite uses `/` as its base path for the `rusty.ninja` custom domain.
   - Pushes to `main` build with npm and deploy through GitHub Actions.
-  - The public page identifies the project and links to its repository.
-- **Dependencies**: `index.html`, `src/`, `vite.config.js`, `package.json`,
-  `.github/workflows/deploy-pages.yml`
+- **Dependencies**: `index.html`, `src/`, `public/`, `vite.config.ts`,
+  `package.json`, `.github/workflows/deploy.yml`
 - **Test Criteria**:
-  - [x] `npm ci` and `npm run build` succeed locally.
-  - [x] The production HTML references root-relative assets for the custom domain.
-  - [x] The GitHub Pages deployment for the exact current commit succeeds.
-  - [x] The public page serves its heading, status copy, and repository link over
-    HTTPS with both hashed Vite assets available.
+  - [x] All unit/generator tests, typechecking, production build, and PWA artifact
+    checks pass locally.
+  - [x] Generator review confirms answer cardinality, deterministic replay,
+    difficulty bounds, and technically defensible classifications and fixes.
+  - [x] Manual samples near levels 1, 3, 5, 7, 9, and 10 show a substantial
+    progression from compiler reasoning to multi-invariant soundness review.
+  - [ ] The exact merged commit deploys successfully through GitHub Actions.
+  - [ ] The public mobile experience, seeded reload, and offline shell are
+    verified against the production deployment.
   - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy
     certificate and enforced HTTPS.
 
 ### Project definition
 
-- **Stability**: planned
-- **Description**: Define the audience, problem, product shape, and first usable
-  outcome for `rusty.ninja` with the project owner.
+- **Stability**: stable
+- **Description**: Train Rust developers and security engineers to recognize
+  realistic review and interview bug patterns in short, repeatable sessions.
 - **Properties**:
   - The intended user and problem are explicit.
   - The first milestone has a narrow, observable outcome.
   - Technology choices follow product requirements rather than precede them.
 - **Test Criteria**:
-  - [ ] The owner has approved a concise project definition.
-  - [ ] The first milestone and its acceptance criteria are documented here.
+  - [x] The owner supplied and approved the product definition.
+  - [x] The first usable milestone and acceptance criteria are documented here.
 
 ### Agent collaboration system
 
