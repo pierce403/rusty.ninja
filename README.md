@@ -15,6 +15,10 @@ npm run dev
 builds that directory and deploys it to GitHub Pages through
 `.github/workflows/deploy-pages.yml`.
 
+The production site is served from [rusty.ninja](https://rusty.ninja/). The
+custom domain is configured in GitHub Pages; Vite therefore builds root-relative
+asset URLs.
+
 ## Working agreements
 
 - [`AGENTS.md`](AGENTS.md) is the canonical guide for agents.

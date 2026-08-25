@@ -12,17 +12,19 @@ affected entry before implementation and update it alongside behavior or evidenc
   Pages while the first product milestone is defined.
 - **Properties**:
   - The source is a minimal Vite app with a production build in `dist/`.
-  - Vite uses `/rusty.ninja/` as its project-site base path.
+  - Vite uses `/` as its base path for the `rusty.ninja` custom domain.
   - Pushes to `main` build with npm and deploy through GitHub Actions.
   - The public page identifies the project and links to its repository.
 - **Dependencies**: `index.html`, `src/`, `vite.config.js`, `package.json`,
   `.github/workflows/deploy-pages.yml`
 - **Test Criteria**:
   - [x] `npm ci` and `npm run build` succeed locally.
-  - [x] The production HTML references assets below `/rusty.ninja/`.
+  - [x] The production HTML references root-relative assets for the custom domain.
   - [x] The GitHub Pages deployment for the exact current commit succeeds.
   - [x] The public page serves its heading, status copy, and repository link over
     HTTPS with both hashed Vite assets available.
+  - [ ] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy
+    certificate and enforced HTTPS.
 
 ### Project definition
 

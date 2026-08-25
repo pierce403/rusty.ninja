@@ -5,7 +5,8 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Attach `rusty.ninja` to GitHub Pages and verify the apex deployment,
+  certificate, HTTPS enforcement, and root-relative Vite assets.
 
 ## Ready
 
