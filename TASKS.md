@@ -5,8 +5,9 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Publish and production-verify the complete rusty.ninja v1 wargame. Owner:
-  Codex. Local gates pass; merge, Actions, apex, mobile, and offline checks remain.
+- [ ] Complete device-level PWA acceptance. Owner: Codex / next mobile-capable
+  session. Exercise standalone install, offline relaunch, and the narrow layout;
+  the current cloud browser exposes neither service workers nor viewport emulation.
 
 ## Ready
 
@@ -18,6 +19,10 @@ None.
 
 ## Completed
 
+- [x] 2026-08-25 — Publish and production-smoke the complete rusty.ninja v1
+  wargame. Evidence: commit `9bc8741`, Actions run `32868659617`, successful
+  answer/feedback/next loop, deterministic seeded replay, exact reload resume,
+  stats/settings dialogs, and live manifest/service-worker/social asset responses.
 - [x] 2026-08-25 — Attach `rusty.ninja` to GitHub Pages. Evidence: Actions run
   `32862025021`, approved certificate, enforced HTTPS, HTTP-to-HTTPS redirect,
   and live root-relative HTML/CSS/JS responses.

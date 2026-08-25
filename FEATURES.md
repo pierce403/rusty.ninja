@@ -34,9 +34,13 @@ affected entry before implementation and update it alongside behavior or evidenc
     difficulty bounds, and technically defensible classifications and fixes.
   - [x] Manual samples near levels 1, 3, 5, 7, 9, and 10 show a substantial
     progression from compiler reasoning to multi-invariant soundness review.
-  - [ ] The exact merged commit deploys successfully through GitHub Actions.
-  - [ ] The public mobile experience, seeded reload, and offline shell are
-    verified against the production deployment.
+  - [x] The exact published tree deploys successfully through GitHub Actions.
+  - [x] The public game loop, deterministic seeded route, and exact reload resume
+    are verified against the production deployment.
+  - [x] The production manifest, service worker, social preview, and generated
+    precache structure are present with successful responses and correct types.
+  - [ ] Standalone install, offline relaunch, and the narrow layout are exercised
+    on a mobile-capable browser or physical device.
   - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy
     certificate and enforced HTTPS.
 
