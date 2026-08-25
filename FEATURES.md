@@ -7,7 +7,7 @@ affected entry before implementation and update it alongside behavior or evidenc
 
 ### Public Vite placeholder
 
-- **Stability**: in-progress
+- **Stability**: stable
 - **Description**: Serve a lightweight placeholder for `rusty.ninja` from GitHub
   Pages while the first product milestone is defined.
 - **Properties**:
@@ -20,8 +20,9 @@ affected entry before implementation and update it alongside behavior or evidenc
 - **Test Criteria**:
   - [x] `npm ci` and `npm run build` succeed locally.
   - [x] The production HTML references assets below `/rusty.ninja/`.
-  - [ ] The GitHub Pages deployment for the exact current commit succeeds.
-  - [ ] The public page renders its heading, status copy, and repository link.
+  - [x] The GitHub Pages deployment for the exact current commit succeeds.
+  - [x] The public page serves its heading, status copy, and repository link over
+    HTTPS with both hashed Vite assets available.
 
 ### Project definition
 
