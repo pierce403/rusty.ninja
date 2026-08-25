@@ -5,6 +5,24 @@ affected entry before implementation and update it alongside behavior or evidenc
 
 ## Features
 
+### Public Vite placeholder
+
+- **Stability**: in-progress
+- **Description**: Serve a lightweight placeholder for `rusty.ninja` from GitHub
+  Pages while the first product milestone is defined.
+- **Properties**:
+  - The source is a minimal Vite app with a production build in `dist/`.
+  - Vite uses `/rusty.ninja/` as its project-site base path.
+  - Pushes to `main` build with npm and deploy through GitHub Actions.
+  - The public page identifies the project and links to its repository.
+- **Dependencies**: `index.html`, `src/`, `vite.config.js`, `package.json`,
+  `.github/workflows/deploy-pages.yml`
+- **Test Criteria**:
+  - [x] `npm ci` and `npm run build` succeed locally.
+  - [x] The production HTML references assets below `/rusty.ninja/`.
+  - [ ] The GitHub Pages deployment for the exact current commit succeeds.
+  - [ ] The public page renders its heading, status copy, and repository link.
+
 ### Project definition
 
 - **Stability**: planned
@@ -37,4 +55,3 @@ affected entry before implementation and update it alongside behavior or evidenc
   - [x] The `curator` skill passes the skill validator.
   - [x] Agent instructions define task ownership, handoffs, evidence, and safe
     promotion of learnings.
-

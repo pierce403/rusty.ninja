@@ -8,6 +8,8 @@ Curated, verified project knowledge belongs here. Dated activity belongs in
 - The repository is named `rusty.ninja`.
 - Product scope and technology choices have not yet been defined by the owner.
 - The agent collaboration workflow was initialized on 2026-08-25.
+- GitHub Pages deploys the Vite `dist/` artifact from pushes to `main`; the
+  project-site base path is `/rusty.ninja/`.
 
 ## Durable conventions
 
@@ -15,4 +17,3 @@ Curated, verified project knowledge belongs here. Dated activity belongs in
 - `FEATURES.md` is the product behavior and acceptance source of truth.
 - `TASKS.md` is the bounded shared queue.
 - Never store secrets or personal data in project memory.
-

@@ -5,7 +5,7 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Publish and verify the Vite hello-world placeholder through GitHub Pages.
 
 ## Ready
 
@@ -21,4 +21,3 @@ None.
 - [x] 2026-08-25 — Initialize the public repository and Recurse-inspired agent
   collaboration system. Evidence: operating documents, compatibility links,
   validated curator skill, initial commit, and verified public GitHub remote.
-

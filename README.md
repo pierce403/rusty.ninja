@@ -1,8 +1,19 @@
 # rusty.ninja
 
-`rusty.ninja` is a new project workspace. Its product direction is intentionally
-open; the repository currently establishes the shared operating system for
-humans and coding agents before implementation begins.
+`rusty.ninja` is a new Vite project. Its product direction is intentionally open;
+the current site is a small public placeholder while the first real milestone is
+defined.
+
+## Local development
+
+```sh
+npm install
+npm run dev
+```
+
+`npm run build` creates the production site in `dist/`. Every push to `main`
+builds that directory and deploys it to GitHub Pages through
+`.github/workflows/deploy-pages.yml`.
 
 ## Working agreements
 
@@ -18,6 +29,5 @@ the canonical `AGENTS.md`.
 
 ## Status
 
-Repository scaffolding is initialized. Product scope and implementation choices
-remain to be defined with the project owner.
-
+The Vite placeholder and GitHub Pages deployment are live. Product scope remains
+to be defined with the project owner.
