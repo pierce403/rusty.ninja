@@ -5,8 +5,7 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Attach `rusty.ninja` to GitHub Pages and verify the apex deployment,
-  certificate, HTTPS enforcement, and root-relative Vite assets.
+None.
 
 ## Ready
 
@@ -19,6 +18,9 @@ None.
 
 ## Completed
 
+- [x] 2026-08-25 — Attach `rusty.ninja` to GitHub Pages. Evidence: Actions run
+  `32862025021`, approved certificate, enforced HTTPS, HTTP-to-HTTPS redirect,
+  and live root-relative HTML/CSS/JS responses.
 - [x] 2026-08-25 — Publish and verify the Vite hello-world placeholder through
   GitHub Pages. Evidence: local build and preview, Actions run `32861449656`,
   Pages workflow configuration, and live HTTPS HTML/CSS/JS responses.

@@ -23,7 +23,7 @@ affected entry before implementation and update it alongside behavior or evidenc
   - [x] The GitHub Pages deployment for the exact current commit succeeds.
   - [x] The public page serves its heading, status copy, and repository link over
     HTTPS with both hashed Vite assets available.
-  - [ ] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy
+  - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy
     certificate and enforced HTTPS.
 
 ### Project definition
