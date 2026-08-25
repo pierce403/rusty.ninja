@@ -5,9 +5,7 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Add an early procedural Rust syntax and vocabulary track, with reviewed
-  official-documentation feedback, mobile presentation, and production publish.
-  Owner: root.
+None.
 
 ## Ready
 
@@ -21,6 +19,10 @@ None.
 
 ## Completed
 
+- [x] 2026-08-25 — Add and publish an early procedural Rust syntax and vocabulary
+  track. Evidence: six generators, 57 tests, primary-documentation review,
+  commit `7c8857b`, Actions run `32905705468`, and a successful production
+  missed-answer/documentation smoke test.
 - [x] 2026-08-25 — Add contextual official documentation to incorrect-answer
   feedback. Evidence: all 26 templates covered by 39 live links, 53 tests,
   typecheck, production build, and PWA verification.
