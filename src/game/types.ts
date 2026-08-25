@@ -2,6 +2,7 @@
 export type SkillLevel = number;
 
 export type FindingClass =
+  | "language-behavior"
   | "compile-error"
   | "logic"
   | "panic-dos"
@@ -9,6 +10,8 @@ export type FindingClass =
   | "context-dependent"
   | "unsoundness"
   | "undefined-behavior";
+
+export type ChallengeTrack = "syntax-vocabulary";
 
 export type SingleChoiceInteractionType =
   | "multiple-choice"
@@ -39,6 +42,8 @@ interface ChallengeBase {
   readonly templateId: string;
   readonly difficulty: SkillLevel;
   readonly concepts: readonly string[];
+  /** Optional curriculum lane used for lightweight in-game orientation. */
+  readonly track?: ChallengeTrack;
   readonly title: string;
   readonly code: string;
   readonly question: string;
@@ -86,6 +91,7 @@ export interface ChallengeTemplate {
   /** Stable lowercase identifier. Changing it breaks old share links. */
   readonly id: string;
   readonly concepts: readonly string[];
+  readonly track?: ChallengeTrack;
   readonly minDifficulty: SkillLevel;
   readonly maxDifficulty: SkillLevel;
   readonly generate: (rng: RNG, targetDifficulty: SkillLevel) => Challenge;

@@ -11,6 +11,58 @@ const reference = (
 ): OfficialReference => ({ source, title, url });
 
 const REFERENCES_BY_TEMPLATE: Readonly<Record<string, readonly OfficialReference[]>> = {
+  "syntax.let-shadowing.v1": [
+    reference(
+      "The Rust Book",
+      "Variables, mutability, and shadowing",
+      "https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing",
+    ),
+  ],
+  "syntax.shared-reference.v1": [
+    reference(
+      "The Rust Book",
+      "References and borrowing",
+      "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html",
+    ),
+  ],
+  "syntax.mutable-reference.v1": [
+    reference(
+      "The Rust Book",
+      "Mutable references and exclusivity",
+      "https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html#mutable-references",
+    ),
+  ],
+  "syntax.slice-view.v1": [
+    reference(
+      "The Rust Book",
+      "The slice type",
+      "https://doc.rust-lang.org/book/ch04-03-slices.html",
+    ),
+  ],
+  "syntax.question-mark.v1": [
+    reference(
+      "Rust Reference",
+      "The question mark operator",
+      "https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator",
+    ),
+    reference(
+      "Rust standard library",
+      "Result",
+      "https://doc.rust-lang.org/std/result/enum.Result.html",
+    ),
+    reference(
+      "Rust standard library",
+      "Option",
+      "https://doc.rust-lang.org/std/option/enum.Option.html",
+    ),
+  ],
+  "syntax.explicit-lifetime.v1": [
+    reference(
+      "The Rust Book",
+      "Lifetime annotation syntax",
+      "https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-annotation-syntax",
+    ),
+  ],
   "ownership.move-after-move.v1": [
     reference(
       "The Rust Book",

@@ -2,15 +2,15 @@
 
 rusty.ninja is a mobile-first, installable Rust security training game. It continuously generates deterministic code-review challenges, adapts their difficulty to the player, and tracks a skill estimate from level `0.0` to `10.0`.
 
-The curriculum spans foundational Rust reasoning, safe-code security failures, integer and allocation hazards, parsing, concurrency, unsafe abstractions, FFI, and advanced soundness. Rusty, the game's battered robot, is repaired and upgraded as the player's skill improves.
+The curriculum opens with a Rust syntax and vocabulary track, then spans foundational reasoning, safe-code security failures, integer and allocation hazards, parsing, concurrency, unsafe abstractions, FFI, and advanced soundness. Rusty, the game's battered robot, is repaired and upgraded as the player's skill improves.
 
-The v1 registry contains 26 procedural templates across all eight interaction formats. Each template varies domain details, values, types, answer order, and selected branches from a stable seed. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
+The v1 registry contains 32 procedural templates across all eight interaction formats. Six low-level generators teach how to read bindings, borrows, slices, lifetimes, `Option`/`Result`, and `?` before the security findings become demanding. Each template varies domain details, values, types, answer order, and selected branches from a stable seed. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
 
 ## How it works
 
 - Challenges are produced locally from composable templates and a seeded PRNG. A challenge URL such as `/#/c/7F3A91` always reproduces the same challenge.
 - A difficulty-aware rating model compares the player estimate with each challenge difficulty. It tracks uncertainty, slows progression near level 10, and samples occasional easier and harder challenges for calibration.
-- Feedback distinguishes compiler errors, logic flaws, panics and denial of service, security vulnerabilities, context-dependent contracts, undefined behavior, and unsound safe abstractions.
+- Feedback distinguishes ordinary Rust language behavior, compiler errors, logic flaws, panics and denial of service, security vulnerabilities, context-dependent contracts, undefined behavior, and unsound safe abstractions.
 - Incorrect-answer feedback links directly to the relevant official Rust, Serde, Tokio, or serde_json documentation so the underlying API and language contracts are easy to verify.
 - Progress, exact in-progress answers/feedback, concept proficiency, streaks, calibration, and bounded durable replay protection stay in versioned `localStorage`. No account or backend is required.
 - The generated service worker precaches the app shell, challenge engine, icons, and Rusty artwork. After one successful production load, training and progress work offline.

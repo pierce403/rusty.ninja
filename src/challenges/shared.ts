@@ -2,6 +2,7 @@ import type {
   Answer,
   Challenge,
   ChallengeInteractionType,
+  ChallengeTrack,
   FindingClass,
   MultiSelectInteractionType,
   RNG,
@@ -18,6 +19,7 @@ interface BaseSpec {
   readonly templateId: string;
   readonly difficulty: number;
   readonly concepts: readonly string[];
+  readonly track?: ChallengeTrack;
   readonly title: string;
   readonly code: string;
   readonly question: string;

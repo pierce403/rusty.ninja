@@ -35,6 +35,7 @@ const CONFIDENCE_OPTIONS: readonly {
 ];
 
 const FINDING_LABELS = {
+  "language-behavior": "Rust language behavior",
   "compile-error": "Compiler error",
   logic: "Logic bug",
   "panic-dos": "Panic / DoS",
@@ -43,6 +44,22 @@ const FINDING_LABELS = {
   unsoundness: "Unsound safe abstraction",
   "undefined-behavior": "Undefined behavior",
 } as const;
+
+function renderLearningTrack(challenge: Challenge): HTMLElement | null {
+  if (challenge.track !== "syntax-vocabulary") return null;
+
+  const track = element("aside", "learning-track");
+  track.append(
+    element("span", "learning-track__eyebrow", "Opening track"),
+    element("strong", "learning-track__title", "Rust syntax & vocabulary"),
+    element(
+      "p",
+      "learning-track__copy",
+      "Decode the notation first: bindings, borrows, slices, lifetimes, and error flow.",
+    ),
+  );
+  return track;
+}
 
 function renderConfidence(options: ChallengeViewOptions): HTMLElement {
   const fieldset = element("fieldset", "confidence");
@@ -224,7 +241,10 @@ export function renderChallengeView(options: ChallengeViewOptions): HTMLElement 
   });
 
   const question = element("h2", "challenge-question", options.challenge.question);
-  section.append(top, concepts, renderCode(options.challenge.code), question);
+  section.append(top);
+  const learningTrack = renderLearningTrack(options.challenge);
+  if (learningTrack) section.append(learningTrack);
+  section.append(concepts, renderCode(options.challenge.code), question);
 
   if (!options.feedback) section.append(renderConfidence(options));
   section.append(renderAnswers(options));

@@ -25,6 +25,7 @@ const INTERACTION_TYPES = new Set([
   "inspect-next",
 ]);
 const FINDING_CLASSES = new Set([
+  "language-behavior",
   "compile-error",
   "logic",
   "panic-dos",
@@ -33,6 +34,7 @@ const FINDING_CLASSES = new Set([
   "unsoundness",
   "undefined-behavior",
 ]);
+const CHALLENGE_TRACKS = new Set(["syntax-vocabulary"]);
 
 export interface CanonicalChallengeSeed {
   readonly version: 1;
@@ -120,6 +122,15 @@ function templateWeight(
 
   if (!state) return weight;
 
+  if (
+    template.track === "syntax-vocabulary" &&
+    state.totalAnswered < 18 &&
+    targetDifficulty <= 2.5
+  ) {
+    const openingProgress = state.totalAnswered / 18;
+    weight *= 1.5 + (1 - openingProgress);
+  }
+
   let conceptWeight = 0;
   for (const concept of template.concepts) {
     const stats = state.statsByConcept[concept];
@@ -206,6 +217,12 @@ export function validateChallenge(
   if (challenge.concepts.length === 0) {
     issues.push("at least one concept is required");
   }
+  if (challenge.track && !CHALLENGE_TRACKS.has(challenge.track)) {
+    issues.push("track is not supported");
+  }
+  if (template?.track && challenge.track !== template.track) {
+    issues.push("challenge track does not match its template");
+  }
   if (!INTERACTION_TYPES.has(challenge.interactionType)) {
     issues.push("interactionType is not supported");
   }
@@ -287,6 +304,9 @@ function validateTemplates(templates: readonly ChallengeTemplate[]): void {
     if (template.concepts.length === 0) {
       issues.push(`template has no concepts: ${template.id}`);
     }
+    if (template.track && !CHALLENGE_TRACKS.has(template.track)) {
+      issues.push(`template has an unsupported track: ${template.id}`);
+    }
   }
   if (issues.length > 0) {
     throw new ChallengeGenerationError("Invalid challenge registry", issues);
@@ -358,8 +378,13 @@ export class ChallengeEngine {
     } else {
       const metadataRng = createRng(seed).fork("legacy-metadata");
       targetDifficulty = Math.round(metadataRng.float(0, 10) * 1_000) / 1_000;
+      // Pre-R1 short links selected from the original untracked registry. Keep
+      // opening-track additions from silently changing those shared challenges.
+      const legacyTemplates = this.#templates.filter(
+        (candidate) => candidate.track === undefined,
+      );
       template = selectChallengeTemplate(
-        this.#templates,
+        legacyTemplates.length > 0 ? legacyTemplates : this.#templates,
         targetDifficulty,
         metadataRng,
       );

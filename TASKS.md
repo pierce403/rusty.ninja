@@ -5,7 +5,9 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Add an early procedural Rust syntax and vocabulary track, with reviewed
+  official-documentation feedback, mobile presentation, and production publish.
+  Owner: root.
 
 ## Ready
 

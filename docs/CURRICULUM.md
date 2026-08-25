@@ -3,6 +3,8 @@
 rusty.ninja treats challenge correctness as a security boundary. The v1 curriculum was reviewed against primary Rust, standard-library, Serde, Tokio, and GitHub Pages documentation. A finding is classified by the strongest behavior established by the shown premises:
 
 - **Compiler error:** rustc rejects the code, so no runtime impact is assigned.
+- **Rust language behavior:** valid syntax or semantics being taught explicitly;
+  no defect or security impact is implied.
 - **Logic:** the program executes but violates intended semantics.
 - **Panic / DoS:** a reachable panic, deadlock, or resource failure; availability impact requires attacker reachability.
 - **Security:** a memory-safe policy, authorization, parsing, or containment failure.
@@ -12,9 +14,29 @@ rusty.ninja treats challenge correctness as a security boundary. The v1 curricul
 
 `unsafe` alone is not a finding, and safe Rust alone is not a security argument. Questions that depend on target width, overflow checks, panic strategy, allocator behavior, operating-system path resolution, executor behavior, or an FFI ownership contract must state or ask for that context.
 
+## Opening track: Rust syntax and vocabulary
+
+Levels 0.0–2.35 preferentially sample six procedural reading exercises before
+the game leans hard on vulnerability classification. They cover `let`, `mut`,
+shadowing, `&T`, `&mut T`, slices, explicit lifetimes, `Option`, `Result`, and
+`?`. These are normal seeded challenges with adaptive rating updates—not a fixed
+tutorial or a gate. Correct examples use the **Rust language behavior** class so
+the game never invents a logic bug merely to fit its audit taxonomy.
+
+The opening track establishes vocabulary with the same distinctions used later:
+a borrow is not a move, a lifetime annotation does not keep storage alive, `?`
+does not panic, and a slice is a bounded borrowed view rather than an owned
+collection. Missing any opening challenge exposes the relevant official Rust
+documentation in feedback.
+
 ## Primary references
 
 - [The Rust Programming Language: ownership](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html)
+- [Variables, mutability, and shadowing](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html#shadowing)
+- [References and borrowing](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
+- [The slice type](https://doc.rust-lang.org/book/ch04-03-slices.html)
+- [Lifetime annotation syntax](https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-annotation-syntax)
+- [Rust Reference: the `?` operator](https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator)
 - [Rust Reference: numeric casts](https://doc.rust-lang.org/reference/expressions/operator-expr.html#numeric-cast)
 - [Rust Reference: behavior considered undefined](https://doc.rust-lang.org/reference/behavior-considered-undefined.html)
 - [`slice::from_raw_parts` safety contract](https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html)

@@ -5,6 +5,7 @@ import {
   decodeChallengeSeed,
   encodeChallengeSeed,
   gradeChallenge,
+  selectChallengeTemplate,
   validateChallenge,
 } from "../../src/game/engine";
 import {
@@ -12,6 +13,7 @@ import {
   recordChallengeResult,
 } from "../../src/game/player-state";
 import type { Challenge, ChallengeTemplate } from "../../src/game/types";
+import { createRng } from "../../src/game/rng";
 
 function makeTemplate(
   id: string,
@@ -109,6 +111,27 @@ describe("challenge engine", () => {
     const high = Array.from({ length: 80 }, () => highEngine.next(highState).difficulty);
     expect(average(high) - average(low)).toBeGreaterThan(5);
     expect([...low, ...high].every((difficulty) => difficulty >= 0 && difficulty <= 10)).toBe(true);
+  });
+
+  it("preferentially samples the syntax track during the opening", () => {
+    const syntaxTemplate = {
+      ...makeTemplate("syntax-track", 0, 3),
+      track: "syntax-vocabulary" as const,
+    };
+    const auditTemplate = makeTemplate("audit-track", 0, 3);
+    const initial = createInitialPlayerState();
+    const experienced = { ...initial, totalAnswered: 18 };
+    const sample = (state: typeof initial) => Array.from(
+      { length: 240 },
+      (_, index) => selectChallengeTemplate(
+        [syntaxTemplate, auditTemplate],
+        1.5,
+        createRng(`track-selection-${index}`),
+        state,
+      ).id,
+    ).filter((id) => id === syntaxTemplate.id).length;
+
+    expect(sample(initial)).toBeGreaterThan(sample(experienced) + 30);
   });
 
   it("does not regenerate an already graded seed after recent history rollover", () => {

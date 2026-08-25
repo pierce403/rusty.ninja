@@ -1,4 +1,5 @@
 import type { ChallengeTemplate } from "../game/types";
+import { syntaxVocabularyTemplates } from "./syntax";
 import {
   boundaryIndexTemplate,
   moveAfterMoveTemplate,
@@ -42,6 +43,7 @@ import {
  * the engine does not walk this as a fixed quiz.
  */
 export const challengeTemplates: readonly ChallengeTemplate[] = [
+  ...syntaxVocabularyTemplates,
   moveAfterMoveTemplate,
   boundaryIndexTemplate,
   refCellReentrancyTemplate,
