@@ -5,9 +5,7 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Add a procedural practical code-reading lane with four-choice behavior and
-  exact-output challenges across increasing complexity, then publish and verify
-  it on `main`. Owner: root.
+None.
 
 ## Ready
 
@@ -21,6 +19,11 @@ None.
 
 ## Completed
 
+- [x] 2026-08-25 — Add and publish a practical Rust code-reading track. Evidence:
+  eight four-choice generators, 61 tests, canonical/legacy seed compatibility,
+  commit `f2c4fa7`, Actions run `32913105672`, and successful production smoke
+  tests for both output prediction and behavior explanation with missed-answer
+  Rust documentation.
 - [x] 2026-08-25 — Add and publish an early procedural Rust syntax and vocabulary
   track. Evidence: six generators, 57 tests, primary-documentation review,
   commit `7c8857b`, Actions run `32905705468`, and a successful production
