@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { challengeTemplates } from "../../src/challenges/registry";
-import { ChallengeEngine, encodeChallengeSeed } from "../../src/game/engine";
+import { ChallengeEngine } from "../../src/game/engine";
 import type { Challenge } from "../../src/game/types";
 
 const PRE_READING_CANONICAL_FIXTURES = [
@@ -52,12 +52,17 @@ function challengeFingerprint(challenge: Challenge): string {
   return (hash >>> 0).toString(16).padStart(8, "0");
 }
 
+function r1Seed(target: number, templateId: string, entropy: string): string {
+  const difficulty = Math.round(Math.min(10, Math.max(0, target)) * 1_000);
+  return `R1~${String(difficulty).padStart(5, "0")}~${templateId}~${entropy}`;
+}
+
 describe("share-seed compatibility", () => {
   const engine = new ChallengeEngine(challengeTemplates);
 
   it("preserves every canonical challenge that predates the reading track", () => {
     for (const [templateId, target, expectedHash] of PRE_READING_CANONICAL_FIXTURES) {
-      const seed = encodeChallengeSeed(target, templateId, "C0FFEE12");
+      const seed = r1Seed(target, templateId, "C0FFEE12");
       expect(challengeFingerprint(engine.fromSeed(seed)), templateId).toBe(expectedHash);
     }
   });

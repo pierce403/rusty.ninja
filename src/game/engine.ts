@@ -1,6 +1,10 @@
 import { hasGradedChallenge, type PlayerState } from "./player-state";
 import { clamp, sampleTargetDifficulty } from "./rating";
 import { createRandomSeed, createRng } from "./rng";
+import {
+  applyChallengeCaseVariant,
+  PROBLEM_VARIANT_COUNT,
+} from "./problem-variants";
 import { isValidShareSeed } from "./routing";
 import type {
   AnswerSubmission,
@@ -13,7 +17,9 @@ import type {
 const TEMPLATE_ID_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 // Keeps the full canonical seed below the route/state 128-character ceiling.
 const ENTROPY_PATTERN = /^[A-Za-z0-9_-]{4,48}$/;
-const CANONICAL_SEED_VERSION = "R1";
+const CURRENT_CANONICAL_SEED_VERSION = "R2";
+const LEGACY_CANONICAL_SEED_VERSION = "R1";
+const PROBLEM_VARIANT_PATTERN = /^\d{2}$/;
 const INTERACTION_TYPES = new Set([
   "multiple-choice",
   "code-comprehension",
@@ -38,12 +44,24 @@ const FINDING_CLASSES = new Set([
 ]);
 const CHALLENGE_TRACKS = new Set(["syntax-vocabulary", "code-reading"]);
 
-export interface CanonicalChallengeSeed {
+export interface CanonicalChallengeSeedV1 {
   readonly version: 1;
   readonly targetDifficulty: number;
   readonly templateId: string;
   readonly entropy: string;
 }
+
+export interface CanonicalChallengeSeedV2 {
+  readonly version: 2;
+  readonly targetDifficulty: number;
+  readonly templateId: string;
+  readonly problemVariantIndex: number;
+  readonly entropy: string;
+}
+
+export type CanonicalChallengeSeed =
+  | CanonicalChallengeSeedV1
+  | CanonicalChallengeSeedV2;
 
 export interface ChallengeEngineOptions {
   /** Injectable solely so deterministic tests do not depend on system entropy. */
@@ -64,6 +82,7 @@ export function encodeChallengeSeed(
   targetDifficulty: number,
   templateId: string,
   entropy: string,
+  problemVariantIndex = 0,
 ): string {
   if (!TEMPLATE_ID_PATTERN.test(templateId) || templateId.length > 64) {
     throw new TypeError("Template IDs must be 1–64 lowercase dotted or kebab-case characters");
@@ -71,15 +90,30 @@ export function encodeChallengeSeed(
   if (!ENTROPY_PATTERN.test(entropy)) {
     throw new TypeError("Challenge entropy must be 4–48 URL-safe characters");
   }
+  if (
+    !Number.isSafeInteger(problemVariantIndex) ||
+    problemVariantIndex < 0 ||
+    problemVariantIndex >= PROBLEM_VARIANT_COUNT
+  ) {
+    throw new TypeError(
+      `Problem variant must be an integer from 0 to ${PROBLEM_VARIANT_COUNT - 1}`,
+    );
+  }
 
   const difficulty = Math.round(clamp(targetDifficulty, 0, 10) * 1_000);
-  return `${CANONICAL_SEED_VERSION}~${String(difficulty).padStart(5, "0")}~${templateId}~${entropy}`;
+  const variant = String(problemVariantIndex).padStart(2, "0");
+  return `${CURRENT_CANONICAL_SEED_VERSION}~${String(difficulty).padStart(5, "0")}~${templateId}~${variant}~${entropy}`;
 }
 
 export function decodeChallengeSeed(seed: string): CanonicalChallengeSeed | null {
   const parts = seed.split("~");
-  if (parts.length !== 4 || parts[0] !== CANONICAL_SEED_VERSION) return null;
-  const [, encodedDifficulty, templateId, entropy] = parts;
+  const isV1 = parts.length === 4 && parts[0] === LEGACY_CANONICAL_SEED_VERSION;
+  const isV2 = parts.length === 5 && parts[0] === CURRENT_CANONICAL_SEED_VERSION;
+  if (!isV1 && !isV2) return null;
+  const encodedDifficulty = parts[1];
+  const templateId = parts[2];
+  const encodedVariant = isV2 ? parts[3] : undefined;
+  const entropy = parts[isV2 ? 4 : 3];
   if (
     !/^\d{5}$/.test(encodedDifficulty as string) ||
     !TEMPLATE_ID_PATTERN.test(templateId as string) ||
@@ -91,6 +125,20 @@ export function decodeChallengeSeed(seed: string): CanonicalChallengeSeed | null
 
   const millilevel = Number(encodedDifficulty);
   if (millilevel < 0 || millilevel > 10_000) return null;
+  if (isV2) {
+    if (!PROBLEM_VARIANT_PATTERN.test(encodedVariant as string)) return null;
+    const problemVariantIndex = Number(encodedVariant);
+    if (problemVariantIndex < 0 || problemVariantIndex >= PROBLEM_VARIANT_COUNT) {
+      return null;
+    }
+    return {
+      version: 2,
+      targetDifficulty: millilevel / 1_000,
+      templateId: templateId as string,
+      problemVariantIndex,
+      entropy: entropy as string,
+    };
+  }
   return {
     version: 1,
     targetDifficulty: millilevel / 1_000,
@@ -169,18 +217,29 @@ export function selectChallengeTemplate(
     throw new ChallengeGenerationError("No challenge templates are registered");
   }
 
-  const exact = templates.filter(
+  // A sliding window of three questions must contain three distinct semantic
+  // families. With a normal registry (three or more templates), excluding the
+  // previous two IDs makes that invariant deterministic instead of probabilistic.
+  const recentTemplateIds = new Set(
+    state?.recentResults.slice(-2).map((result) => result.templateId) ?? [],
+  );
+  const unseenTemplates = templates.filter(
+    (template) => !recentTemplateIds.has(template.id),
+  );
+  const eligibleTemplates = unseenTemplates.length > 0 ? unseenTemplates : templates;
+
+  const exact = eligibleTemplates.filter(
     (template) =>
       targetDifficulty >= template.minDifficulty &&
       targetDifficulty <= template.maxDifficulty,
   );
   const candidates = exact.length > 0
     ? exact
-    : [...templates].sort(
+    : [...eligibleTemplates].sort(
         (left, right) =>
           distanceToRange(targetDifficulty, left.minDifficulty, left.maxDifficulty) -
           distanceToRange(targetDifficulty, right.minDifficulty, right.maxDifficulty),
-      ).slice(0, Math.min(3, templates.length));
+      ).slice(0, Math.min(3, eligibleTemplates.length));
   return rng.weightedPick(
     candidates,
     candidates.map((template) => templateWeight(template, targetDifficulty, state)),
@@ -218,6 +277,19 @@ export function validateChallenge(
   }
   if (challenge.concepts.length === 0) {
     issues.push("at least one concept is required");
+  }
+  if (challenge.caseVariant) {
+    requiredText(challenge.caseVariant.id, "caseVariant.id", issues);
+    requiredText(challenge.caseVariant.label, "caseVariant.label", issues);
+    requiredText(challenge.caseVariant.sourcePath, "caseVariant.sourcePath", issues);
+    if (
+      !Number.isSafeInteger(challenge.caseVariant.index) ||
+      challenge.caseVariant.index < 0 ||
+      challenge.caseVariant.index >= PROBLEM_VARIANT_COUNT ||
+      challenge.caseVariant.total !== PROBLEM_VARIANT_COUNT
+    ) {
+      issues.push("caseVariant must identify one of the supported problem variants");
+    }
   }
   if (challenge.track && !CHALLENGE_TRACKS.has(challenge.track)) {
     issues.push("track is not supported");
@@ -348,7 +420,13 @@ export class ChallengeEngine {
         selectionRng,
         state,
       );
-      canonicalSeed = encodeChallengeSeed(targetDifficulty, template.id, entropy);
+      const problemVariantIndex = selectionRng.int(0, PROBLEM_VARIANT_COUNT - 1);
+      canonicalSeed = encodeChallengeSeed(
+        targetDifficulty,
+        template.id,
+        entropy,
+        problemVariantIndex,
+      );
       if (!hasGradedChallenge(state, canonicalSeed)) break;
     }
 
@@ -392,7 +470,10 @@ export class ChallengeEngine {
       );
     }
 
-    const generated = template.generate(createRng(seed), targetDifficulty);
+    const baseChallenge = template.generate(createRng(seed), targetDifficulty);
+    const generated = canonical?.version === 2
+      ? applyChallengeCaseVariant(baseChallenge, canonical.problemVariantIndex)
+      : baseChallenge;
     const challenge = {
       ...generated,
       seed,

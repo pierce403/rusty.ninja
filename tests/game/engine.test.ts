@@ -65,11 +65,12 @@ describe("challenge engine", () => {
   });
 
   it("encodes template and difficulty in canonical share seeds", () => {
-    const seed = encodeChallengeSeed(6.371, "broad-review", "7F3A91");
+    const seed = encodeChallengeSeed(6.371, "broad-review", "7F3A91", 17);
     expect(decodeChallengeSeed(seed)).toEqual({
-      version: 1,
+      version: 2,
       targetDifficulty: 6.371,
       templateId: "broad-review",
+      problemVariantIndex: 17,
       entropy: "7F3A91",
     });
     const engine = new ChallengeEngine([broad]);
@@ -77,12 +78,27 @@ describe("challenge engine", () => {
       seed,
       templateId: "broad-review",
       difficulty: 6.371,
+      caseVariant: {
+        index: 17,
+        total: 40,
+      },
     });
     expect(
       decodeChallengeSeed(
         encodeChallengeSeed(8.5, "soundness.safe-wrapper.v1", "CAFE4030"),
       )?.templateId,
     ).toBe("soundness.safe-wrapper.v1");
+  });
+
+  it("continues to decode and reproduce R1 canonical links", () => {
+    const seed = "R1~06371~broad-review~7F3A91";
+    expect(decodeChallengeSeed(seed)).toEqual({
+      version: 1,
+      targetDifficulty: 6.371,
+      templateId: "broad-review",
+      entropy: "7F3A91",
+    });
+    expect(new ChallengeEngine([broad]).fromSeed(seed).caseVariant).toBeUndefined();
   });
 
   it("keeps canonical links stable when registry order changes", () => {
@@ -132,6 +148,35 @@ describe("challenge engine", () => {
     ).filter((id) => id === syntaxTemplate.id).length;
 
     expect(sample(initial)).toBeGreaterThan(sample(experienced) + 30);
+  });
+
+  it("keeps every sliding window of three challenges free of repeated families", () => {
+    const templates = [
+      makeTemplate("family-a"),
+      makeTemplate("family-b"),
+      makeTemplate("family-c"),
+      makeTemplate("family-d"),
+    ];
+    let counter = 0;
+    const engine = new ChallengeEngine(templates, {
+      seedFactory: () => `WINDOW${String(counter++).padStart(5, "0")}`,
+    });
+    let state = { ...createInitialPlayerState(), rating: 5, uncertainty: 0.4 };
+    const selected: string[] = [];
+
+    for (let index = 0; index < 80; index += 1) {
+      const generated = engine.next(state);
+      selected.push(generated.templateId);
+      state = {
+        ...recordChallengeResult(state, generated, { correct: true }),
+        rating: 5,
+        uncertainty: 0.4,
+      };
+    }
+
+    for (let index = 2; index < selected.length; index += 1) {
+      expect(new Set(selected.slice(index - 2, index + 1)).size).toBe(3);
+    }
   });
 
   it("does not regenerate an already graded seed after recent history rollover", () => {

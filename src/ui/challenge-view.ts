@@ -240,6 +240,14 @@ export function renderChallengeView(options: ChallengeViewOptions): HTMLElement 
   );
   const title = element("h1", "challenge-panel__title", options.challenge.title);
   titleGroup.append(kicker, title);
+  if (options.challenge.caseVariant) {
+    const caseVariant = options.challenge.caseVariant;
+    titleGroup.append(element(
+      "p",
+      "challenge-panel__case",
+      `Case ${caseVariant.index + 1}/${caseVariant.total} · ${caseVariant.label} · ${caseVariant.sourcePath}`,
+    ));
+  }
   const share = button("ghost-button share-button", "Share", options.onShare);
   share.setAttribute("aria-label", "Share this seeded challenge");
   top.append(titleGroup, share);

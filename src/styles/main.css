@@ -363,6 +363,14 @@ button:disabled {
   line-height: 1.14;
 }
 
+.challenge-panel__case {
+  margin: 7px 0 0;
+  color: var(--muted-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
 .learning-track {
   margin: 12px 0 0;
   padding: 10px 11px;

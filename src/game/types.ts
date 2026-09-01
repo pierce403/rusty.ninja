@@ -38,12 +38,23 @@ export interface Answer {
   readonly explanation?: string;
 }
 
+export interface ChallengeCaseVariant {
+  /** Zero-based slot encoded in R2 challenge seeds. */
+  readonly index: number;
+  readonly total: number;
+  readonly id: string;
+  readonly label: string;
+  readonly sourcePath: string;
+}
+
 interface ChallengeBase {
   /** A stable, shareable seed. The same application version must reproduce this challenge. */
   readonly seed: string;
   readonly templateId: string;
   readonly difficulty: SkillLevel;
   readonly concepts: readonly string[];
+  /** Present on expanded R2 challenges; omitted when reproducing older links. */
+  readonly caseVariant?: ChallengeCaseVariant;
   /** Optional curriculum lane used for lightweight in-game orientation. */
   readonly track?: ChallengeTrack;
   readonly title: string;

@@ -4,11 +4,15 @@ rusty.ninja is a mobile-first, installable Rust security training game. It conti
 
 The curriculum opens with a Rust syntax and vocabulary track, then spans foundational reasoning, safe-code security failures, integer and allocation hazards, parsing, concurrency, unsafe abstractions, FFI, and advanced soundness. Rusty, the game's battered robot, is repaired and upgraded as the player's skill improves.
 
-The v1 registry contains 40 procedural templates across ten interaction formats. Six low-level generators teach how to read bindings, borrows, slices, lifetimes, `Option`/`Result`, and `?` before the security findings become demanding. Eight practical code-reading generators then ask the player to choose what ordinary Rust does or predict its exact output from four realistic answers. Each template varies domain details, values, types, answer order, and selected branches from a stable seed. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
+The registry contains 40 reviewed procedural templates across ten interaction formats. Each template now has 40 explicit, numbered code-review contexts, producing 1,600 case/template forms before the existing seeded variation in domain details, values, types, identifiers, answer order, and selected branches. Six low-level generators teach how to read bindings, borrows, slices, lifetimes, `Option`/`Result`, and `?` before the security findings become demanding. Eight practical code-reading generators then ask the player to choose what ordinary Rust does or predict its exact output from four realistic answers. See [docs/CURRICULUM.md](docs/CURRICULUM.md) for the review model and primary technical references.
 
 ## How it works
 
 - Challenges are produced locally from composable templates and a seeded PRNG. A challenge URL such as `/#/c/7F3A91` always reproduces the same challenge.
+- New R2 challenge links encode one of 40 review contexts. Existing R1 canonical
+  links and historical short links remain byte-for-byte compatible.
+- The selector excludes the two most recently answered semantic template families,
+  guaranteeing that any three consecutive normally generated problems are distinct.
 - A difficulty-aware rating model compares the player estimate with each challenge difficulty. It tracks uncertainty, slows progression near level 10, and samples occasional easier and harder challenges for calibration.
 - Feedback distinguishes ordinary Rust language behavior, compiler errors, logic flaws, panics and denial of service, security vulnerabilities, context-dependent contracts, undefined behavior, and unsound safe abstractions.
 - Incorrect-answer feedback links directly to the relevant official Rust, Serde, Tokio, or serde_json documentation so the underlying API and language contracts are easy to verify.

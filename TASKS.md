@@ -19,6 +19,11 @@ None.
 
 ## Completed
 
+- [x] 2026-09-01 — Expand every semantic template into 40 numbered review cases
+  at every covered skill band and hard-prevent family repeats within any three
+  normally generated challenges. Evidence: 1,600 deterministic case/template
+  combinations, quarter-level coverage and 80-selection regressions, preserved
+  R1/short-link fingerprints, 70 tests, typecheck, and production/PWA build.
 - [x] 2026-09-01 — Keep difficulty-10 successes visibly rewarding throughout
   the level-9.9 endgame. Evidence: level 9.93 reaches mastery within four correct
   certain answers, nonzero sub-cent deltas remain visible, and 65 tests plus the

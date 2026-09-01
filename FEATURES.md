@@ -11,9 +11,11 @@ affected entry before implementation and update it alongside behavior or evidenc
 - **Description**: Deliver a mobile-first, endless Rust security code-review
   game that adapts to the player and works offline after first load.
 - **Properties**:
-  - Forty deterministic procedural templates cover ten interaction formats from
-    Rust syntax and vocabulary through unsafe abstractions, FFI, concurrency,
-    and advanced soundness.
+  - Forty reviewed procedural templates cover ten interaction formats from Rust
+    syntax and vocabulary through unsafe abstractions, FFI, concurrency, and
+    advanced soundness. Forty numbered review contexts multiply every template
+    into 1,600 explicit case/template forms before existing seeded domain, value,
+    type, identifier, answer-order, and branch variation.
   - Six opening-track generators teach bindings and shadowing, shared and mutable
     references, slices, lifetimes, `Option`/`Result`, and `?`; they are
     preferentially sampled during the first 18 answers without becoming a fixed
@@ -26,8 +28,13 @@ affected entry before implementation and update it alongside behavior or evidenc
     makes exact level 10 an exceptional calibrated result rather than a grind;
     top-tier successes remain visibly rewarding through level 9.9, and a
     calibrated success at the default confidence can complete mastery.
+  - Template selection hard-excludes the previous two semantic problem families,
+    so every sliding window of three normal generated challenges is repeat-free;
+    older third-position families retain a soft diversity penalty.
   - Versioned localStorage preserves exact in-progress feedback, concept stats,
     calibration, and bounded durable replay protection without an account.
+  - R2 share seeds encode the selected review context while all R1 canonical and
+    historical short links retain their original output.
   - Six original Rusty progression states, responsive controls, shareable seeded
     hashes, export/import/reset, and accessible keyboard behavior support a fast
     phone-first loop.
@@ -59,6 +66,10 @@ affected entry before implementation and update it alongside behavior or evidenc
   - [x] Practical code-reading challenges are deterministic, contain exactly four
     distinct answers with one correct choice, fit within 20 lines, span levels
     0.35–5.25, and preserve all pre-existing canonical and short share seeds.
+  - [x] Every semantic template exposes 40 unique deterministic case contexts,
+    and coverage at each quarter-level from 0 through 10 expands by exactly 40x.
+  - [x] An 80-challenge selection regression proves every sliding window of three
+    contains three distinct semantic template IDs.
   - [ ] Standalone install, offline relaunch, and the narrow layout are exercised
     on a mobile-capable browser or physical device.
   - [x] GitHub Pages reports `rusty.ninja` as its custom domain with a healthy

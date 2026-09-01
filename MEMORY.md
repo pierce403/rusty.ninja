@@ -14,6 +14,9 @@ Curated, verified project knowledge belongs here. Dated activity belongs in
 - The agent collaboration workflow was initialized on 2026-08-25.
 - GitHub Pages deploys the Vite `dist/` artifact from pushes to `main` at the
   `rusty.ninja` apex; Vite uses the root base path `/`.
+- R2 challenge seeds encode one of 40 numbered review contexts for every semantic
+  template. The engine excludes the prior two template families, while R1 and
+  historical short links retain their original generated content.
 
 ## Durable conventions
 
