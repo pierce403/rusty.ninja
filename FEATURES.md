@@ -23,7 +23,8 @@ affected entry before implementation and update it alongside behavior or evidenc
     iterators, ownership, collections, and RAII; five ask what gets printed and
     three ask what the code does.
   - A continuous uncertainty-aware rating adapts difficulty on a 0–10 scale and
-    makes exact level 10 an exceptional calibrated result rather than a grind.
+    makes exact level 10 an exceptional calibrated result rather than a grind;
+    a calibrated top-tier success at the default confidence can complete mastery.
   - Versioned localStorage preserves exact in-progress feedback, concept stats,
     calibration, and bounded durable replay protection without an account.
   - Six original Rusty progression states, responsive controls, shareable seeded

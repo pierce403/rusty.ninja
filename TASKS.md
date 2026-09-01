@@ -19,6 +19,9 @@ None.
 
 ## Completed
 
+- [x] 2026-09-01 — Let calibrated level-10 successes complete progression at
+  the default confidence while keeping guesses and easy-question grinding below
+  mastery. Evidence: targeted rating regression tests and release gates.
 - [x] 2026-08-25 — Add and publish a practical Rust code-reading track. Evidence:
   eight four-choice generators, 61 tests, canonical/legacy seed compatibility,
   commit `f2c4fa7`, Actions run `32913105672`, and successful production smoke

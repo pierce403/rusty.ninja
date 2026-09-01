@@ -58,22 +58,34 @@ describe("adaptive rating", () => {
   });
 
   it("reserves exact 10 for a calibrated top-level mastery observation", () => {
-    const almost = updateRating({
+    const uncalibrated = updateRating({
       rating: 9.98,
-      uncertainty: 0.17,
+      uncertainty: 0.3,
       challengeDifficulty: 9.95,
       correct: true,
       confidence: "pretty-sure",
     });
     const mastery = updateRating({
       rating: 9.98,
-      uncertainty: 0.17,
+      uncertainty: 0.19,
       challengeDifficulty: 9.95,
       correct: true,
-      confidence: "certain",
+      confidence: "pretty-sure",
     });
-    expect(almost.rating).toBeLessThan(10);
+    expect(uncalibrated.rating).toBeLessThan(10);
     expect(mastery).toMatchObject({ rating: 10, masteryAchieved: true });
+  });
+
+  it("does not let guessed top-level answers complete mastery", () => {
+    const update = updateRating({
+      rating: 9.98,
+      uncertainty: 0.17,
+      challengeDifficulty: 10,
+      correct: true,
+      confidence: "guess",
+    });
+    expect(update.rating).toBeLessThan(10);
+    expect(update.masteryAchieved).toBe(false);
   });
 
   it("reduces uncertainty with informative answers", () => {

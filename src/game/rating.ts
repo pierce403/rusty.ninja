@@ -89,10 +89,10 @@ export function updateRating(input: RatingInput): RatingUpdate {
 
   const masteryAchieved =
     input.correct &&
-    confidence === "certain" &&
+    confidence !== "guess" &&
     oldRating >= 9.97 &&
     difficulty >= 9.9 &&
-    oldUncertainty <= 0.18;
+    uncertainty <= 0.18;
 
   const rating = masteryAchieved
     ? MAX_RATING
