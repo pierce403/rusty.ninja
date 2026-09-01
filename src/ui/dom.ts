@@ -25,7 +25,10 @@ export function formatPercent(value: number): string {
 }
 
 export function formatDelta(value: number): string {
-  if (Math.abs(value) < 0.005) return "±0.00";
+  if (value === 0) return "±0.00";
+  if (Math.abs(value) < 0.005) {
+    return `${value > 0 ? "+" : ""}${value.toFixed(3)}`;
+  }
   return `${value > 0 ? "+" : ""}${value.toFixed(2)}`;
 }
 

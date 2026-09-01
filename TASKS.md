@@ -19,6 +19,10 @@ None.
 
 ## Completed
 
+- [x] 2026-09-01 — Keep difficulty-10 successes visibly rewarding throughout
+  the level-9.9 endgame. Evidence: level 9.93 reaches mastery within four correct
+  certain answers, nonzero sub-cent deltas remain visible, and 65 tests plus the
+  production/PWA build pass.
 - [x] 2026-09-01 — Let calibrated level-10 successes complete progression at
   the default confidence while keeping guesses and easy-question grinding below
   mastery. Evidence: targeted rating regression tests and release gates.

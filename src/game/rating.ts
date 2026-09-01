@@ -8,6 +8,8 @@ export const MAX_UNCERTAINTY = 2.8;
 
 const LOGISTIC_SCALE = 1.15;
 const PRE_MASTERY_CEILING = 9.994;
+// Keeps a calibrated difficulty-10 success near level 10 worth roughly 0.015.
+const TOP_TIER_BOUNDARY_FLOOR = 0.125;
 
 const CONFIDENCE_EVIDENCE: Readonly<Record<AnswerConfidence, number>> = {
   guess: 0.9,
@@ -72,8 +74,14 @@ export function updateRating(input: RatingInput): RatingUpdate {
 
   const uncertaintyFactor = clamp(oldUncertainty / 1.4, 0.32, 1.6);
   const learningRate = 0.72 * uncertaintyFactor * evidenceWeight;
+  const correctBoundaryFloor = difficulty >= 9.9
+    ? TOP_TIER_BOUNDARY_FLOOR
+    : 0.006;
   const boundaryFactor = input.correct
-    ? Math.max(0.006, ((MAX_RATING - oldRating) / MAX_RATING) ** 0.72)
+    ? Math.max(
+        correctBoundaryFloor,
+        ((MAX_RATING - oldRating) / MAX_RATING) ** 0.72,
+      )
     : Math.max(0.07, (oldRating / MAX_RATING) ** 0.62);
   const unboundedDelta = learningRate * residual * boundaryFactor;
 

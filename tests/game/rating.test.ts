@@ -38,6 +38,24 @@ describe("adaptive rating", () => {
     expect(elite.delta).toBeLessThan(middle.delta * 0.15);
   });
 
+  it("keeps certain difficulty-10 successes rewarding at level 9.93", () => {
+    let rating = 9.93;
+    let uncertainty = 0.12;
+    for (let index = 0; index < 4; index += 1) {
+      const update = updateRating({
+        rating,
+        uncertainty,
+        challengeDifficulty: 10,
+        correct: true,
+        confidence: "certain",
+      });
+      if (index === 0) expect(update.delta).toBeGreaterThanOrEqual(0.015);
+      rating = update.rating;
+      uncertainty = update.uncertainty;
+    }
+    expect(rating).toBe(10);
+  });
+
   it("does not award exact level 10 through easy-question grinding", () => {
     let rating = 9.8;
     let uncertainty = 0.3;
