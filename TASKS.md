@@ -19,6 +19,11 @@ None.
 
 ## Completed
 
+- [x] 2026-10-13 — Patch transitive fast-uri alert #1 and newly observed
+  brace-expansion/source-map-js advisories in the locked PWA build tree.
+  Evidence: clean Node 24 install, zero known npm audit findings, 70 tests,
+  typecheck, production build, and PWA artifact verification. Draft PR review
+  remains; no production deployment was performed.
 - [x] 2026-09-01 — Expand every semantic template into 40 numbered review cases
   at every covered skill band and hard-prevent family repeats within any three
   normally generated challenges. Evidence: 1,600 deterministic case/template

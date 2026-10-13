@@ -45,7 +45,7 @@ affected entry before implementation and update it alongside behavior or evidenc
   - Vite uses `/` as its base path for the `rusty.ninja` custom domain.
   - Pushes to `main` build with npm and deploy through GitHub Actions.
 - **Dependencies**: `index.html`, `src/`, `public/`, `vite.config.ts`,
-  `package.json`, `.github/workflows/deploy.yml`
+  `package.json`, `package-lock.json`, `.github/workflows/deploy.yml`
 - **Test Criteria**:
   - [x] All unit/generator tests, typechecking, production build, and PWA artifact
     checks pass locally.
