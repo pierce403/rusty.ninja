@@ -107,3 +107,14 @@ affected entry before implementation and update it alongside behavior or evidenc
   - [x] The `curator` skill passes the skill validator.
   - [x] Agent instructions define task ownership, handoffs, evidence, and safe
     promotion of learnings.
+
+### Native Cloudflare static hosting
+
+- **Stability**: in-progress
+- **Description**: Publish the existing browser app through native Git without changing local persistence or integration semantics.
+- **Properties**:
+  - Original generators, app paths and any PWA URLs remain.
+  - Credentials stay in Cloudflare; previews stay off; Pages remains recovery.
+- **Test Criteria**:
+  - [x] Locked install, meaningful existing tests, build and Worker dry run pass.
+  - [ ] Exact native build/version/routes, custom-host HTTPS, real404, browser behavior and usage metrics pass.
