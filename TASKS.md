@@ -5,7 +5,9 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-None.
+- [ ] Migrate the existing static game to native Cloudflare Git hosting, preserving
+  local progress, seeded hashes, public assets and PWA URLs; verify HTTPS,
+  real404 and visitor/request metrics. Owner: Cloudflare migration session.
 
 ## Ready
 
