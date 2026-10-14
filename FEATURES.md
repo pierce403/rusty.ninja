@@ -110,11 +110,11 @@ affected entry before implementation and update it alongside behavior or evidenc
 
 ### Native Cloudflare static hosting
 
-- **Stability**: in-progress
+- **Stability**: stable
 - **Description**: Publish the existing browser app through native Git without changing local persistence or integration semantics.
 - **Properties**:
   - Original generators, app paths and any PWA URLs remain.
   - Credentials stay in Cloudflare; previews stay off; Pages remains recovery.
 - **Test Criteria**:
   - [x] Locked install, meaningful existing tests, build and Worker dry run pass.
-  - [ ] Exact native build/version/routes, custom-host HTTPS, real404, browser behavior and usage metrics pass.
+  - [x] Exact native build/version/routes, custom-host HTTPS, real404, browser behavior and usage metrics pass.

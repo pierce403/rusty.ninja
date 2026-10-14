@@ -5,9 +5,7 @@ move completed work to the archive rather than accumulating an unbounded backlog
 
 ## In progress
 
-- [ ] Migrate the existing static game to native Cloudflare Git hosting, preserving
-  local progress, seeded hashes, public assets and PWA URLs; verify HTTPS,
-  real404 and visitor/request metrics. Owner: Cloudflare migration session.
+None.
 
 ## Ready
 
@@ -20,6 +18,8 @@ move completed work to the archive rather than accumulating an unbounded backlog
 None.
 
 ## Completed
+
+- [x] 2026-10-14: Verified native Cloudflare static hosting, preserved local progress/seed and PWA URLs, managed HTTPS, real404 and received visitor/request metrics. Device-level PWA acceptance remains separate.
 
 - [x] 2026-10-13 — Patch transitive fast-uri alert #1 and newly observed
   brace-expansion/source-map-js advisories in the locked PWA build tree.
