@@ -81,10 +81,6 @@ In the repository's Pages settings, select **GitHub Actions** as the source, con
 
 The settings view can export progress as JSON, import a compatible versioned export, or reset local progress. Export before clearing site data or moving to another device.
 
-## License
-
-No license has been selected yet. All rights are reserved until the repository owner adds one.
-
 ## Cloudflare hosting
 
 Native Git publishes `main` with `npm run build:cloudflare` and `npm run deploy`.
@@ -97,3 +93,9 @@ October14Cloudflare hosting acceptance passed: exact native route build/version,
 managed HTTPS, all generated asset comparisons, real404, browser rendering,
 received visits and request/status metrics. Existing local data was not reset.
 Hosting acceptance does not expand wallet, messaging, hardware or PWA-device claims.
+
+## License
+
+Original code and documentation in this repository are licensed under the
+[Apache License 2.0](LICENSE). Third-party dependencies, quoted material, and
+other third-party content retain their respective licenses and rights.
